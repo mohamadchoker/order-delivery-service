@@ -1,0 +1,15 @@
+# act configuration file
+# Use this file to configure act for local GitHub Actions testing
+
+# Use medium-sized Docker images (better performance than default)
+-P ubuntu-latest=catthehacker/ubuntu:act-latest
+
+# Bind local directory
+--bind
+
+# Enable verbose output
+--verbose
+
+# Use GitHub token from environment (optional - for API rate limits)
+# Uncomment and set GITHUB_TOKEN environment variable if needed
+# --secret GITHUB_TOKEN=$GITHUB_TOKEN

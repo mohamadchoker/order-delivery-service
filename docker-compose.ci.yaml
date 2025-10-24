@@ -1,0 +1,70 @@
+# ==============================================================================
+# CI/CD COMPOSE - Optimized for automated testing and builds
+# Usage: docker-compose -f docker-compose.ci.yaml up --abort-on-container-exit
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: order-delivery-postgres-ci
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: order_delivery_db
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    # No volume mount for CI - fresh DB each run
+    tmpfs:
+      - /var/lib/postgresql/data  # Use tmpfs for speed in CI
+
+  service:
+    build:
+      context: .
+      dockerfile: Dockerfile.ci
+      args:
+        - GO_VERSION=1.24
+    container_name: order-delivery-service-ci
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=order_delivery_db
+      - DB_SSLMODE=disable
+      - DB_LOG_SQL=false  # Disable SQL logging in CI for cleaner output
+      - LOG_LEVEL=info
+      - LOG_DEV=false     # Production-like logging
+      - CI=true
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c "
+        echo '🧪 Running CI pipeline...' &&
+        echo '📦 Installing dependencies...' &&
+        go mod download &&
+        echo '🔧 Running linter...' &&
+        golangci-lint run --timeout=5m ./... &&
+        echo '🗄️  Running migrations...' &&
+        migrate -path ./migrations -database 'postgres://postgres:postgres@postgres:5432/order_delivery_db?sslmode=disable' up &&
+        echo '🧪 Running tests...' &&
+        go test -v -race -coverprofile=coverage.out -covermode=atomic ./... &&
+        echo '📊 Coverage report:' &&
+        go tool cover -func=coverage.out &&
+        echo '🏗️  Building application...' &&
+        go build -o bin/server cmd/server/main.go &&
+        echo '✅ CI pipeline completed successfully!'
+      "
+    volumes:
+      - .:/app  # Mount source code
+      - go_modules_ci:/go/pkg/mod  # Cache Go modules
+
+volumes:
+  go_modules_ci:

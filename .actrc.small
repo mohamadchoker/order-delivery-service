@@ -1,0 +1,10 @@
+# Lightweight act configuration (faster, smaller downloads)
+# Use this with: act --rc-file .actrc.small
+
+# Use micro image (only ~150MB)
+-P ubuntu-latest=node:16-buster-slim
+
+# Bind local directory
+--bind
+
+# Quieter output

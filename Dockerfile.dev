@@ -1,0 +1,50 @@
+# ==============================================================================
+# DEVELOPMENT BUILD - Hot-reload with Air (~500 MB)
+# ==============================================================================
+
+FROM golang:1.24-alpine
+
+# Install system dependencies
+RUN apk add --no-cache \
+    git \
+    make \
+    protobuf-dev \
+    postgresql-client \
+    bash \
+    gcc \
+    musl-dev
+
+
+# Install delve for debugging
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
+
+# Install Air for hot-reloading
+RUN go install github.com/air-verse/air@v1.61.5
+
+# Install development tools
+RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
+    go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest && \
+    go install go.uber.org/mock/mockgen@latest
+
+# Install golang-migrate with PostgreSQL driver
+# -tags 'postgres': REQUIRED or you get "unknown driver postgres" error
+RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
+WORKDIR /app
+
+# Copy dependency files (layer caching)
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy source code (overridden by volume mount in docker-compose.dev.yaml)
+COPY . .
+
+# Expose ports
+EXPOSE 50051 9090 2345
+
+# Copy and setup entrypoint
+COPY entrypoint-dev.sh /entrypoint-dev.sh
+RUN chmod +x /entrypoint-dev.sh
+
+# Start with entrypoint (waits for DB, runs migrations, starts Air)
+CMD ["/entrypoint-dev.sh"]

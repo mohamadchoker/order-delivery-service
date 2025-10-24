@@ -1,0 +1,61 @@
+# ==============================================================================
+# DEBUG COMPOSE - Hot-reload with Air + Delve debugger
+# Usage: make dev-debug
+# Note: fmt.Println output may be buffered/hidden by Delve
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: order-delivery-postgres-debug
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: order_delivery_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_debug:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  service:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: order-delivery-service-debug
+    ports:
+      - "50051:50051"  # gRPC
+      - "9090:9090"    # Metrics
+      - "2345:2345"    # Delve debugger port
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=order_delivery_db
+      - DB_SSLMODE=disable
+      - DB_LOG_SQL=true                 # Show SQL queries in logs
+      - LOG_LEVEL=debug
+      - LOG_DEV=true
+      - AIR_CONFIG=.air.debug.toml      # Use debug config with Delve
+    volumes:
+      - .:/app                    # Mount source code for hot-reload
+      - go_modules:/go/pkg/mod    # Cache Go modules
+      - /app/tmp                  # Exclude Air build artifacts
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"  # Don't auto-restart (want to see crashes)
+    security_opt:
+      - "seccomp:unconfined"
+    cap_add:
+      - SYS_PTRACE
+volumes:
+  postgres_data_debug:
+  go_modules:

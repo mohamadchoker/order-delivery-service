@@ -1,0 +1,59 @@
+# Git
+.git
+.gitignore
+.github
+
+# IDE
+.idea
+.vscode
+.claude
+*.swp
+*.swo
+*~
+
+# Documentation
+*.md
+!README.md
+docs/
+GETTING_STARTED.md
+INDEX.md
+PROJECT_SUMMARY.md
+QUICK_REFERENCE.md
+
+# Build artifacts
+bin/
+*.exe
+*.test
+*.out
+
+# Test coverage
+coverage.out
+coverage.html
+*.coverprofile
+
+# Configuration (don't copy to image)
+config/config.yaml
+.env
+.env.*
+
+# Docker
+docker-compose.yaml
+docker-compose.*.yaml
+Dockerfile
+.dockerignore
+
+# Makefile and scripts (not needed in runtime)
+Makefile
+scripts/
+
+# Dependencies (will be downloaded in build)
+vendor/
+
+# Temporary files
+*.log
+*.tmp
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db

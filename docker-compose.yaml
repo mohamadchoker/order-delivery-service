@@ -1,0 +1,48 @@
+# ==============================================================================
+# PRODUCTION COMPOSE - Optimized build for testing production setup locally
+# Usage: make docker-up
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: order-delivery-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: order_delivery_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: order-delivery-service
+    ports:
+      - "50051:50051"  # gRPC
+      - "9090:9090"    # Metrics
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=order_delivery_db
+      - DB_SSLMODE=disable
+      - LOG_LEVEL=info
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

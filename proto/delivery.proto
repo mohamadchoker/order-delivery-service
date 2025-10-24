@@ -1,0 +1,144 @@
+syntax = "proto3";
+
+package delivery;
+
+option go_package = "github.com/company/order-delivery-service/proto";
+
+import "google/protobuf/timestamp.proto";
+
+// DeliveryService manages order delivery assignments
+service DeliveryService {
+  // CreateDeliveryAssignment creates a new delivery assignment
+  rpc CreateDeliveryAssignment(CreateDeliveryAssignmentRequest) returns (DeliveryAssignment);
+  
+  // GetDeliveryAssignment retrieves a delivery assignment by ID
+  rpc GetDeliveryAssignment(GetDeliveryAssignmentRequest) returns (DeliveryAssignment);
+  
+  // UpdateDeliveryStatus updates the status of a delivery
+  rpc UpdateDeliveryStatus(UpdateDeliveryStatusRequest) returns (DeliveryAssignment);
+  
+  // ListDeliveryAssignments lists delivery assignments with pagination
+  rpc ListDeliveryAssignments(ListDeliveryAssignmentsRequest) returns (ListDeliveryAssignmentsResponse);
+  
+  // AssignDriver assigns a driver to a delivery
+  rpc AssignDriver(AssignDriverRequest) returns (DeliveryAssignment);
+  
+  // GetDeliveryMetrics retrieves delivery metrics
+  rpc GetDeliveryMetrics(GetDeliveryMetricsRequest) returns (DeliveryMetrics);
+}
+
+// DeliveryStatus represents the current status of a delivery
+enum DeliveryStatus {
+  // Unspecified (default)
+  UNSPECIFIED = 0;
+
+  // Pending - awaiting driver assignment
+  PENDING = 1;
+
+  // Assigned - driver assigned
+  ASSIGNED = 2;
+
+  // Picked up - package collected
+  PICKED_UP = 3;
+
+  // In transit - on the way
+  IN_TRANSIT = 4;
+
+  // Delivered - successfully delivered
+  DELIVERED = 5;
+
+  // Failed - delivery failed
+  FAILED = 6;
+
+  // Cancelled - delivery cancelled
+  CANCELLED = 7;
+}
+
+// Address represents a physical address
+message Address {
+  string street = 1;
+  string city = 2;
+  string state = 3;
+  string postal_code = 4;
+  string country = 5;
+  double latitude = 6;
+  double longitude = 7;
+}
+
+// DeliveryAssignment represents a delivery assignment
+message DeliveryAssignment {
+  string id = 1;
+  string order_id = 2;
+  string driver_id = 3;
+  DeliveryStatus status = 4;
+  Address pickup_address = 5;
+  Address delivery_address = 6;
+  google.protobuf.Timestamp scheduled_pickup_time = 7;
+  google.protobuf.Timestamp estimated_delivery_time = 8;
+  google.protobuf.Timestamp actual_pickup_time = 9;
+  google.protobuf.Timestamp actual_delivery_time = 10;
+  string notes = 11;
+  google.protobuf.Timestamp created_at = 12;
+  google.protobuf.Timestamp updated_at = 13;
+}
+
+// CreateDeliveryAssignmentRequest creates a new delivery assignment
+message CreateDeliveryAssignmentRequest {
+  string order_id = 1;
+  Address pickup_address = 2;
+  Address delivery_address = 3;
+  google.protobuf.Timestamp scheduled_pickup_time = 4;
+  google.protobuf.Timestamp estimated_delivery_time = 5;
+  string notes = 6;
+}
+
+// GetDeliveryAssignmentRequest retrieves a delivery assignment
+message GetDeliveryAssignmentRequest {
+  string id = 1;
+}
+
+// UpdateDeliveryStatusRequest updates delivery status
+message UpdateDeliveryStatusRequest {
+  string id = 1;
+  DeliveryStatus status = 2;
+  string notes = 3;
+}
+
+// ListDeliveryAssignmentsRequest lists delivery assignments
+message ListDeliveryAssignmentsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  DeliveryStatus status = 3;
+  string driver_id = 4;
+}
+
+// ListDeliveryAssignmentsResponse returns paginated delivery assignments
+message ListDeliveryAssignmentsResponse {
+  repeated DeliveryAssignment assignments = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+// AssignDriverRequest assigns a driver to delivery
+message AssignDriverRequest {
+  string id = 1;
+  string driver_id = 2;
+}
+
+// GetDeliveryMetricsRequest retrieves delivery metrics
+message GetDeliveryMetricsRequest {
+  google.protobuf.Timestamp start_time = 1;
+  google.protobuf.Timestamp end_time = 2;
+  string driver_id = 3;
+}
+
+// DeliveryMetrics contains aggregated delivery statistics
+message DeliveryMetrics {
+  int32 total_deliveries = 1;
+  int32 completed_deliveries = 2;
+  int32 failed_deliveries = 3;
+  int32 cancelled_deliveries = 4;
+  double average_delivery_time_minutes = 5;
+  double on_time_delivery_rate = 6;
+}

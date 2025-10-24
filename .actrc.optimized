@@ -1,0 +1,17 @@
+# Optimized act configuration
+# Balances speed, compatibility, and download size
+
+# Use medium image (good balance: ~500MB vs 17GB full image)
+-P ubuntu-latest=catthehacker/ubuntu:act-latest
+
+# Reuse containers between runs (faster, less downloads)
+--reuse
+
+# Bind local directory (faster file access)
+--bind
+
+# Use container architecture for M-series Macs
+--container-architecture linux/amd64
+
+# Cache Docker layers
+--use-gitignore=false
