@@ -3,6 +3,7 @@ module github.com/mohamadchoker/order-delivery-service/proto
 go 1.24.9
 
 // protos mpdule
+// created by choker
 
 require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3
