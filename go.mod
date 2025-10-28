@@ -1,4 +1,4 @@
-module github.com/company/order-delivery-service
+module github.com/mohamad.choker/order-delivery-service
 
 go 1.24.0
 
