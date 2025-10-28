@@ -6,7 +6,7 @@ require (
 	github.com/golang/protobuf v1.5.4
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3
-	github.com/mohamadchoker/order-delivery-service/proto v0.0.0-20251028123113-a44818d6b49f
+	github.com/mohamadchoker/order-delivery-service/proto v0.0.0-00010101000000-000000000000
 	github.com/prometheus/client_golang v1.23.2
 	github.com/stretchr/testify v1.11.1
 	go.uber.org/mock v0.6.0
@@ -41,3 +41,5 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251022142026-3a174f9686a8 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/mohamadchoker/order-delivery-service/proto => ./proto
