@@ -16,6 +16,9 @@ proto: ## Generate Go code from proto files
 	@echo "Generating proto files..."
 	@protoc --go_out=. --go_opt=paths=source_relative \
 		--go-grpc_out=. --go-grpc_opt=paths=source_relative \
+		--grpc-gateway_out=. --grpc-gateway_opt=paths=source_relative \
+		--openapiv2_out=. --openapiv2_opt=allow_merge=true,merge_file_name=api \
+		--proto_path=. --proto_path=third_party \
 		$(PROTO_DIR)/*.proto
 	@echo "Proto files generated successfully"
 
@@ -26,12 +29,12 @@ mocks: ## Generate mocks using mockgen
 
 build: proto ## Build the application
 	@echo "Building $(BINARY_NAME)..."
-	@go build -o bin/$(BINARY_NAME) cmd/server/main.go
+	@go build -o bin/$(BINARY_NAME) ./cmd/server
 	@echo "Build complete: bin/$(BINARY_NAME)"
 
 run: ## Run the application
 	@echo "Starting $(BINARY_NAME)..."
-	@go run cmd/server/main.go
+	@go run ./cmd/server
 
 test: ## Run unit tests
 	@echo "Running tests..."
@@ -126,6 +129,8 @@ install-tools: ## Install development tools
 	@echo "Installing tools..."
 	@go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 	@go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+	@go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
+	@go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 	@echo "Installing migrate with PostgreSQL support..."
 	@go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
@@ -189,7 +194,7 @@ ci-lint: ## Run linter in CI environment
 
 ci-build: ## Build application in CI environment
 	@echo "Building in CI environment..."
-	@docker-compose -f docker-compose.ci.yaml run --rm service sh -c "go build -o bin/server cmd/server/main.go"
+	@docker-compose -f docker-compose.ci.yaml run --rm service sh -c "go build -o bin/server ./cmd/server"
 
 ci-coverage: ## Generate coverage report in CI environment
 	@echo "Generating coverage report..."

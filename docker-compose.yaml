@@ -39,6 +39,8 @@ services:
       - DB_NAME=order_delivery_db
       - DB_SSLMODE=disable
       - LOG_LEVEL=info
+      - LOG_DEV=false               # Production mode
+      - LOG_STACKTRACE=false        # No stack traces in production
     depends_on:
       postgres:
         condition: service_healthy

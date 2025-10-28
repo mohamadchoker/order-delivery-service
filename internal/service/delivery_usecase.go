@@ -20,6 +20,7 @@ type DeliveryUseCase interface {
 	ListDeliveryAssignments(ctx context.Context, input ListDeliveryInput) ([]*domain.DeliveryAssignment, int64, error)
 	AssignDriver(ctx context.Context, id uuid.UUID, driverID string) (*domain.DeliveryAssignment, error)
 	GetDeliveryMetrics(ctx context.Context, startTime, endTime time.Time, driverID *string) (*domain.DeliveryMetrics, error)
+	DeleteDeliveryAssignment(ctx context.Context, id uuid.UUID) error
 }
 
 // CreateDeliveryInput contains input for creating a delivery assignment
@@ -56,10 +57,6 @@ func NewDeliveryUseCase(repo DeliveryRepository, logger *zap.Logger) DeliveryUse
 
 // CreateDeliveryAssignment creates a new delivery assignment
 func (u *deliveryUseCase) CreateDeliveryAssignment(ctx context.Context, input CreateDeliveryInput) (*domain.DeliveryAssignment, error) {
-	u.logger.Info("Creating delivery assignment",
-		zap.String("order_id", input.OrderID),
-	)
-
 	// Validate input
 	if input.OrderID == "" {
 		return nil, domain.ErrInvalidInput
@@ -88,18 +85,11 @@ func (u *deliveryUseCase) CreateDeliveryAssignment(ctx context.Context, input Cr
 		return nil, err
 	}
 
-	u.logger.Info("Delivery assignment created successfully",
-		zap.String("id", assignment.ID.String()),
-		zap.String("order_id", input.OrderID),
-	)
-
 	return assignment, nil
 }
 
 // GetDeliveryAssignment retrieves a delivery assignment by ID
 func (u *deliveryUseCase) GetDeliveryAssignment(ctx context.Context, id uuid.UUID) (*domain.DeliveryAssignment, error) {
-	u.logger.Debug("Getting delivery assignment", zap.String("id", id.String()))
-
 	assignment, err := u.repo.GetByID(ctx, id)
 	if err != nil {
 		u.logger.Error("Failed to get delivery assignment",
@@ -114,11 +104,6 @@ func (u *deliveryUseCase) GetDeliveryAssignment(ctx context.Context, id uuid.UUI
 
 // UpdateDeliveryStatus updates the status of a delivery assignment
 func (u *deliveryUseCase) UpdateDeliveryStatus(ctx context.Context, id uuid.UUID, status domain.DeliveryStatus, notes string) (*domain.DeliveryAssignment, error) {
-	u.logger.Info("Updating delivery status",
-		zap.String("id", id.String()),
-		zap.String("status", string(status)),
-	)
-
 	// Get existing assignment
 	assignment, err := u.repo.GetByID(ctx, id)
 	if err != nil {
@@ -150,21 +135,11 @@ func (u *deliveryUseCase) UpdateDeliveryStatus(ctx context.Context, id uuid.UUID
 		return nil, err
 	}
 
-	u.logger.Info("Delivery status updated successfully",
-		zap.String("id", id.String()),
-		zap.String("status", string(status)),
-	)
-
 	return assignment, nil
 }
 
 // ListDeliveryAssignments retrieves delivery assignments with pagination
 func (u *deliveryUseCase) ListDeliveryAssignments(ctx context.Context, input ListDeliveryInput) ([]*domain.DeliveryAssignment, int64, error) {
-	u.logger.Debug("Listing delivery assignments",
-		zap.Int("page", input.Page),
-		zap.Int("page_size", input.PageSize),
-	)
-
 	// Set defaults
 	if input.Page < 1 {
 		input.Page = 1
@@ -186,11 +161,6 @@ func (u *deliveryUseCase) ListDeliveryAssignments(ctx context.Context, input Lis
 
 // AssignDriver assigns a driver to a delivery assignment
 func (u *deliveryUseCase) AssignDriver(ctx context.Context, id uuid.UUID, driverID string) (*domain.DeliveryAssignment, error) {
-	u.logger.Info("Assigning driver to delivery",
-		zap.String("id", id.String()),
-		zap.String("driver_id", driverID),
-	)
-
 	// Validate driver ID
 	if driverID == "" {
 		return nil, domain.ErrInvalidInput
@@ -221,21 +191,11 @@ func (u *deliveryUseCase) AssignDriver(ctx context.Context, id uuid.UUID, driver
 		return nil, err
 	}
 
-	u.logger.Info("Driver assigned successfully",
-		zap.String("id", id.String()),
-		zap.String("driver_id", driverID),
-	)
-
 	return assignment, nil
 }
 
 // GetDeliveryMetrics retrieves delivery metrics
 func (u *deliveryUseCase) GetDeliveryMetrics(ctx context.Context, startTime, endTime time.Time, driverID *string) (*domain.DeliveryMetrics, error) {
-	u.logger.Debug("Getting delivery metrics",
-		zap.Time("start_time", startTime),
-		zap.Time("end_time", endTime),
-	)
-
 	// Validate time range
 	if startTime.After(endTime) {
 		return nil, domain.ErrInvalidInput
@@ -248,4 +208,14 @@ func (u *deliveryUseCase) GetDeliveryMetrics(ctx context.Context, startTime, end
 	}
 
 	return metrics, nil
+}
+
+func (u *deliveryUseCase) DeleteDeliveryAssignment(ctx context.Context, id uuid.UUID) error {
+	err := u.repo.Delete(ctx, id)
+	if err != nil {
+		u.logger.Error("Failed to delete delivery assignment")
+		return err
+	}
+
+	return nil
 }

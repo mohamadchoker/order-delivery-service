@@ -32,8 +32,8 @@ var (
 	ErrTimeout = errors.New("operation timeout")
 )
 
-// DomainError represents a domain-specific error with context
-type DomainError struct {
+// Error DomainError represents a domain-specific error with context
+type Error struct {
 	Op      string // operation that failed
 	Code    string // error code for client identification
 	Message string // human-readable message
@@ -41,7 +41,7 @@ type DomainError struct {
 }
 
 // Error implements the error interface
-func (e *DomainError) Error() string {
+func (e *Error) Error() string {
 	if e.Err != nil {
 		return fmt.Sprintf("%s: %s: %v", e.Op, e.Message, e.Err)
 	}
@@ -49,13 +49,13 @@ func (e *DomainError) Error() string {
 }
 
 // Unwrap implements the unwrap interface for errors.Is and errors.As
-func (e *DomainError) Unwrap() error {
+func (e *Error) Unwrap() error {
 	return e.Err
 }
 
 // NewDomainError creates a new domain error
-func NewDomainError(op, code, message string, err error) *DomainError {
-	return &DomainError{
+func NewDomainError(op, code, message string, err error) *Error {
+	return &Error{
 		Op:      op,
 		Code:    code,
 		Message: message,

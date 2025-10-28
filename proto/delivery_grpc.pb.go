@@ -11,6 +11,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -25,6 +26,7 @@ const (
 	DeliveryService_ListDeliveryAssignments_FullMethodName  = "/delivery.DeliveryService/ListDeliveryAssignments"
 	DeliveryService_AssignDriver_FullMethodName             = "/delivery.DeliveryService/AssignDriver"
 	DeliveryService_GetDeliveryMetrics_FullMethodName       = "/delivery.DeliveryService/GetDeliveryMetrics"
+	DeliveryService_DeleteDeliveryAssignment_FullMethodName = "/delivery.DeliveryService/DeleteDeliveryAssignment"
 )
 
 // DeliveryServiceClient is the client API for DeliveryService service.
@@ -45,6 +47,7 @@ type DeliveryServiceClient interface {
 	AssignDriver(ctx context.Context, in *AssignDriverRequest, opts ...grpc.CallOption) (*DeliveryAssignment, error)
 	// GetDeliveryMetrics retrieves delivery metrics
 	GetDeliveryMetrics(ctx context.Context, in *GetDeliveryMetricsRequest, opts ...grpc.CallOption) (*DeliveryMetrics, error)
+	DeleteDeliveryAssignment(ctx context.Context, in *DeleteDeliveryAssignmentRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type deliveryServiceClient struct {
@@ -115,6 +118,16 @@ func (c *deliveryServiceClient) GetDeliveryMetrics(ctx context.Context, in *GetD
 	return out, nil
 }
 
+func (c *deliveryServiceClient) DeleteDeliveryAssignment(ctx context.Context, in *DeleteDeliveryAssignmentRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, DeliveryService_DeleteDeliveryAssignment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DeliveryServiceServer is the server API for DeliveryService service.
 // All implementations must embed UnimplementedDeliveryServiceServer
 // for forward compatibility.
@@ -133,6 +146,7 @@ type DeliveryServiceServer interface {
 	AssignDriver(context.Context, *AssignDriverRequest) (*DeliveryAssignment, error)
 	// GetDeliveryMetrics retrieves delivery metrics
 	GetDeliveryMetrics(context.Context, *GetDeliveryMetricsRequest) (*DeliveryMetrics, error)
+	DeleteDeliveryAssignment(context.Context, *DeleteDeliveryAssignmentRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedDeliveryServiceServer()
 }
 
@@ -160,6 +174,9 @@ func (UnimplementedDeliveryServiceServer) AssignDriver(context.Context, *AssignD
 }
 func (UnimplementedDeliveryServiceServer) GetDeliveryMetrics(context.Context, *GetDeliveryMetricsRequest) (*DeliveryMetrics, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetDeliveryMetrics not implemented")
+}
+func (UnimplementedDeliveryServiceServer) DeleteDeliveryAssignment(context.Context, *DeleteDeliveryAssignmentRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDeliveryAssignment not implemented")
 }
 func (UnimplementedDeliveryServiceServer) mustEmbedUnimplementedDeliveryServiceServer() {}
 func (UnimplementedDeliveryServiceServer) testEmbeddedByValue()                         {}
@@ -290,6 +307,24 @@ func _DeliveryService_GetDeliveryMetrics_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DeliveryService_DeleteDeliveryAssignment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteDeliveryAssignmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DeliveryServiceServer).DeleteDeliveryAssignment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DeliveryService_DeleteDeliveryAssignment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DeliveryServiceServer).DeleteDeliveryAssignment(ctx, req.(*DeleteDeliveryAssignmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DeliveryService_ServiceDesc is the grpc.ServiceDesc for DeliveryService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -320,6 +355,10 @@ var DeliveryService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetDeliveryMetrics",
 			Handler:    _DeliveryService_GetDeliveryMetrics_Handler,
+		},
+		{
+			MethodName: "DeleteDeliveryAssignment",
+			Handler:    _DeliveryService_DeleteDeliveryAssignment_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

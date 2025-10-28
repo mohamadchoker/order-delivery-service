@@ -2,24 +2,56 @@ package logger
 
 import (
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
+
+// Config holds logger configuration options
+type Config struct {
+	Level            string
+	Development      bool
+	EnableStacktrace bool
+}
 
 // New creates a new logger instance
 func New(level string, development bool) (*zap.Logger, error) {
-	var config zap.Config
+	return NewWithConfig(Config{
+		Level:            level,
+		Development:      development,
+		EnableStacktrace: development, // Default: enable stacktrace only in dev mode
+	})
+}
 
-	if development {
-		config = zap.NewDevelopmentConfig()
+// NewWithConfig creates a new logger instance with explicit configuration
+func NewWithConfig(cfg Config) (*zap.Logger, error) {
+	var zapConfig zap.Config
+
+	if cfg.Development {
+		zapConfig = zap.NewDevelopmentConfig()
 	} else {
-		config = zap.NewProductionConfig()
+		zapConfig = zap.NewProductionConfig()
 	}
 
+	// Always disable automatic stack traces - we'll control this manually
+	zapConfig.DisableStacktrace = true
+	zapConfig.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
+
 	// Set log level
-	zapLevel, err := zap.ParseAtomicLevel(level)
+	zapLevel, err := zap.ParseAtomicLevel(cfg.Level)
 	if err != nil {
 		return nil, err
 	}
-	config.Level = zapLevel
+	zapConfig.Level = zapLevel
 
-	return config.Build()
+	// Build logger with options
+	var opts []zap.Option
+
+	// Always add caller info (shows file:line)
+	opts = append(opts, zap.AddCaller())
+
+	// Optionally add stack traces
+	if cfg.EnableStacktrace {
+		opts = append(opts, zap.AddStacktrace(zapcore.ErrorLevel))
+	}
+
+	return zapConfig.Build(opts...)
 }

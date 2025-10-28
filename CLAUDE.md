@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-An enterprise-grade microservice for managing order delivery assignments built with Go, gRPC, and PostgreSQL following Clean Architecture principles. The service tracks delivery lifecycles from creation through completion with validated state transitions.
+An enterprise-grade microservice for managing order delivery assignments built with Go, gRPC, PostgreSQL, and REST following Clean Architecture principles. The service tracks delivery lifecycles from creation through completion with validated state transitions.
 
 **✨ Recently Refactored (October 2025)**: The codebase has been fully restructured to follow enterprise Go best practices with:
 - Proper package naming conventions (`domain`, `service`, `transport`)
@@ -14,13 +14,19 @@ An enterprise-grade microservice for managing order delivery assignments built w
 - **Dependency Inversion**: Repository interface now owned by service layer
 - Security improvements: Credentials externalized, .env support
 - Version tracking and build information
+- **gRPC-Gateway**: REST/HTTP API alongside gRPC endpoints
 
 ## Project Structure
 
 ```
 order-delivery-service/
-├── api/
-│   └── grpc/                   # gRPC API definitions (Protocol Buffers)
+├── proto/                      # Protocol Buffer definitions
+│   ├── delivery.proto          # Service definitions with HTTP annotations
+│   ├── delivery.pb.go          # Generated protobuf code
+│   ├── delivery_grpc.pb.go     # Generated gRPC server/client
+│   └── delivery.pb.gw.go       # Generated gRPC-Gateway reverse proxy
+├── third_party/                # Third-party proto dependencies
+│   └── google/api/             # Google API annotations for HTTP
 ├── cmd/
 │   └── server/                 # Application entry point
 ├── internal/
@@ -42,6 +48,7 @@ order-delivery-service/
 ├── migrations/                 # Database migrations
 ├── config/                     # Configuration files
 ├── docs/                       # Documentation
+├── api.swagger.json            # Generated OpenAPI/Swagger spec
 └── scripts/                    # Utility scripts
 ```
 
@@ -56,6 +63,10 @@ export PATH=$PATH:~/go/bin
 echo 'export PATH=$PATH:~/go/bin' >> ~/.zshrc
 ```
 
+**IDE Setup**: If using GoLand/IntelliJ and seeing `Cannot resolve import 'google/api/annotations.proto'` errors:
+- See [IDE Setup Guide](docs/IDE_SETUP.md) for configuration instructions
+- The proto files compile correctly with `make proto` - IDE errors are cosmetic
+
 ### Building and Running
 ```bash
 # Generate proto files (required after proto changes)
@@ -64,11 +75,17 @@ make proto
 # Build the application
 make build
 
-# Run the service (default port: 50051)
+# Run the service (default ports: gRPC 50051, HTTP 8080)
 make run
 
 # Install required development tools
 make install-tools
+```
+
+**Default Ports**:
+- gRPC: `50051` (configurable via `PORT` env var)
+- HTTP/REST: `8080` (configurable via `HTTP_PORT` env var)
+- Metrics: `9090` (configurable via `METRICS_PORT` env var)
 ```
 
 ### Testing
@@ -120,7 +137,9 @@ docker-compose up
 docker-compose down
 ```
 
-### Testing the gRPC API
+### Testing the APIs
+
+#### gRPC API (port 50051)
 ```bash
 # List available services
 grpcurl -plaintext localhost:50051 list
@@ -136,6 +155,73 @@ grpcurl -plaintext -d '{
   "scheduled_pickup_time": "2024-01-15T10:00:00Z",
   "estimated_delivery_time": "2024-01-15T14:00:00Z"
 }' localhost:50051 delivery.DeliveryService/CreateDeliveryAssignment
+```
+
+#### REST/HTTP API (port 8080)
+
+The service automatically exposes all gRPC endpoints as REST APIs via grpc-gateway.
+
+**Create delivery assignment:**
+```bash
+curl -X POST http://localhost:8080/v1/deliveries \
+  -H "Content-Type: application/json" \
+  -d '{
+    "order_id": "ORDER-123",
+    "pickup_address": {
+      "street": "123 Main St",
+      "city": "NYC",
+      "state": "NY",
+      "postal_code": "10001",
+      "country": "USA"
+    },
+    "delivery_address": {
+      "street": "456 Oak Ave",
+      "city": "Boston",
+      "state": "MA",
+      "postal_code": "02101",
+      "country": "USA"
+    },
+    "scheduled_pickup_time": "2024-01-15T10:00:00Z",
+    "estimated_delivery_time": "2024-01-15T14:00:00Z"
+  }'
+```
+
+**Get delivery assignment:**
+```bash
+curl http://localhost:8080/v1/deliveries/{id}
+```
+
+**Update delivery status:**
+```bash
+curl -X PATCH http://localhost:8080/v1/deliveries/{id}/status \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "PICKED_UP",
+    "notes": "Package picked up"
+  }'
+```
+
+**List delivery assignments:**
+```bash
+curl "http://localhost:8080/v1/deliveries?page=1&page_size=20&status=PENDING"
+```
+
+**Assign driver:**
+```bash
+curl -X POST http://localhost:8080/v1/deliveries/{id}/assign-driver \
+  -H "Content-Type: application/json" \
+  -d '{
+    "driver_id": "DRIVER-456"
+  }'
+```
+
+**Get delivery metrics:**
+```bash
+curl "http://localhost:8080/v1/deliveries/metrics?driver_id=DRIVER-456"
+```
+
+**OpenAPI/Swagger Documentation:**
+The service generates an OpenAPI specification at `api.swagger.json`. You can view it using any OpenAPI viewer or import it into tools like Postman.
 ```
 
 ## Architecture
@@ -166,15 +252,46 @@ The codebase follows strict Clean Architecture with dependencies flowing inward:
    - Request validation
    - Error handling and gRPC status mapping
 
-5. **API Layer** (`api/grpc/`): Protocol definitions
-   - Protocol buffer definitions
+5. **API Layer** (`proto/`): Protocol definitions
+   - Protocol buffer definitions with HTTP annotations
    - Generated gRPC code
+   - Generated gRPC-Gateway reverse proxy code
+
+### gRPC-Gateway Integration
+
+The service uses [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway) to automatically expose REST/HTTP endpoints alongside gRPC:
+
+**How it works**:
+1. Proto files include `google.api.http` annotations defining REST mappings
+2. `make proto` generates both gRPC and HTTP gateway code
+3. At runtime, the gateway acts as a reverse proxy:
+   - HTTP requests → Gateway translates to gRPC → gRPC handlers
+   - Responses flow back: gRPC → Gateway translates to JSON → HTTP response
+4. Same business logic serves both protocols - no code duplication
+
+**Benefits**:
+- Single source of truth (proto definitions)
+- Automatic OpenAPI/Swagger spec generation
+- Type-safe REST API with validation
+- Easy integration for clients preferring REST over gRPC
+- Both protocols can coexist on different ports
+
+**Example mapping** (`proto/delivery.proto`):
+```protobuf
+rpc CreateDeliveryAssignment(CreateDeliveryAssignmentRequest) returns (DeliveryAssignment) {
+  option (google.api.http) = {
+    post: "/v1/deliveries"
+    body: "*"
+  };
+}
+```
 
 ### Key Architectural Patterns
 
 **Dependency Injection**: All dependencies injected via constructors. The main.go file wires everything together:
 ```
 DB → Repository → Service → Handler → gRPC Server
+                                    ↘ HTTP Gateway (reverse proxy to gRPC)
 ```
 
 **Repository Pattern**: Data access abstracted behind interfaces. Repository works with domain entities, not database models. Internal conversion happens in repository layer.
@@ -183,7 +300,7 @@ DB → Repository → Service → Handler → gRPC Server
 
 ### Data Flow Example
 
-Creating a delivery:
+**Creating a delivery via gRPC**:
 1. gRPC request arrives at `Handler.CreateDeliveryAssignment()`
 2. Handler converts Proto → Domain Entity
 3. Handler calls `Service.CreateDeliveryAssignment()`
@@ -191,6 +308,12 @@ Creating a delivery:
 5. Service calls `Repository.Create()`
 6. Repository converts Entity → DB Model and persists
 7. Response flows back: DB Model → Entity → Proto → gRPC Response
+
+**Creating a delivery via REST/HTTP**:
+1. HTTP POST to `/v1/deliveries` arrives at Gateway
+2. Gateway translates JSON → Proto and forwards to gRPC Handler
+3. Steps 2-6 are identical (same gRPC handler and business logic)
+4. Response flows back: Proto → Gateway translates to JSON → HTTP Response
 
 ## Delivery Status Transitions
 
@@ -284,7 +407,8 @@ Configuration loaded from `config/config.yaml` with environment variable overrid
 3. Default values (lowest priority)
 
 **Key Configuration**:
-- Server port (default: 50051)
+- gRPC server port (default: 50051)
+- HTTP gateway port (default: 8080)
 - Metrics port (default: 9090)
 - Database connection (host, port, user, password, dbname)
 - Logger level and mode
@@ -293,16 +417,28 @@ Configuration loaded from `config/config.yaml` with environment variable overrid
 
 **Environment Variables**:
 ```bash
+# Server
+PORT=50051                    # gRPC server port
+HTTP_PORT=8080                # HTTP gateway port
+METRICS_PORT=9090             # Prometheus metrics port
+SHUTDOWN_TIMEOUT=30s          # Graceful shutdown timeout
+
 # Database
-DELIVERY_DATABASE_HOST=localhost
-DELIVERY_DATABASE_PORT=5432
-DELIVERY_DATABASE_USER=postgres
-DELIVERY_DATABASE_PASSWORD=your_password_here
-DELIVERY_DATABASE_DBNAME=order_delivery_db
-DELIVERY_DATABASE_SSLMODE=disable
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=your_password_here
+DB_NAME=order_delivery_db
+DB_SSLMODE=disable
+DB_MAX_OPEN_CONNS=25
+DB_MAX_IDLE_CONNS=5
+DB_CONN_MAX_LIFETIME=5m
+DB_LOG_SQL=false
 
 # Logger
-DELIVERY_LOGGER_LEVEL=info
+LOG_LEVEL=info                # debug, info, warn, error
+LOG_DEV=false                 # Enable development mode
+LOG_STACKTRACE=false          # Enable stack traces
 ```
 
 **Setup Steps**:
@@ -312,7 +448,11 @@ DELIVERY_LOGGER_LEVEL=info
 
 ## Important Implementation Notes
 
-**Proto Generation**: Always run `make proto` after modifying `api/grpc/delivery.proto`. Generated files go to the same directory.
+**Proto Generation**: Always run `make proto` after modifying `proto/delivery.proto`. Generated files include:
+- `delivery.pb.go` - Protobuf message definitions
+- `delivery_grpc.pb.go` - gRPC server and client code
+- `delivery.pb.gw.go` - HTTP gateway reverse proxy code
+- `api.swagger.json` - OpenAPI/Swagger specification
 
 **Database Connection**: Uses GORM with PostgreSQL driver. Connection pooling configured in `pkg/postgres/`.
 
@@ -466,22 +606,30 @@ import (
 **Adding a New Field to DeliveryAssignment**:
 1. Update `domain.DeliveryAssignment` struct
 2. Update `repository/postgres/model.DeliveryAssignment` struct
-3. Update `api/grpc/delivery.proto` message
-4. Run `make proto` to regenerate proto code
+3. Update `proto/delivery.proto` message
+4. Run `make proto` to regenerate proto code (updates gRPC and HTTP gateway automatically)
 5. Update conversion logic in transport handlers
 6. Add validation in `pkg/validator` if needed
 7. Create and apply database migration
 8. Update tests
 
-**Adding a New gRPC Endpoint**:
-1. Define RPC in `api/grpc/delivery.proto`
-2. Run `make proto`
-3. Implement method in `internal/transport/grpc/grpc_handler.go`
+**Adding a New gRPC/REST Endpoint**:
+1. Define RPC in `proto/delivery.proto` with HTTP annotation:
+   ```protobuf
+   rpc GetDeliveryStats(GetDeliveryStatsRequest) returns (DeliveryStats) {
+     option (google.api.http) = {
+       get: "/v1/deliveries/stats"
+     };
+   }
+   ```
+2. Run `make proto` (automatically generates both gRPC and REST endpoints)
+3. Implement method in `internal/transport/grpc/delivery_handler.go`
 4. Add input validation using `pkg/validator`
 5. Add corresponding method to `Service` interface and implementation
 6. Add repository method if needed
 7. Add metrics recording if appropriate
 8. Write tests
+9. The REST endpoint is automatically available at the specified path
 
 **Using Validation in Services**:
 ```go

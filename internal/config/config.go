@@ -37,8 +37,9 @@ type DatabaseConfig struct {
 
 // LoggerConfig holds logger configuration
 type LoggerConfig struct {
-	Level       string
-	Development bool
+	Level            string //nolint:goimports,gofmt
+	Development      bool
+	EnableStacktrace bool // Enable stack traces in logs (useful for debugging)
 }
 
 // Load loads configuration from environment variables with sensible defaults
@@ -62,8 +63,9 @@ func Load() (*Config, error) {
 			LogSQL:          getEnvAsBool("DB_LOG_SQL", false),
 		},
 		Logger: LoggerConfig{
-			Level:       getEnv("LOG_LEVEL", "info"),
-			Development: getEnvAsBool("LOG_DEV", false),
+			Level:            getEnv("LOG_LEVEL", "info"), //nolint:goimports,gofmt
+			Development:      getEnvAsBool("LOG_DEV", false),
+			EnableStacktrace: getEnvAsBool("LOG_STACKTRACE", false),
 		},
 	}
 

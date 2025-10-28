@@ -7,8 +7,10 @@
 package proto
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -857,11 +859,55 @@ func (x *DeliveryMetrics) GetOnTimeDeliveryRate() float64 {
 	return 0
 }
 
+type DeleteDeliveryAssignmentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteDeliveryAssignmentRequest) Reset() {
+	*x = DeleteDeliveryAssignmentRequest{}
+	mi := &file_proto_delivery_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteDeliveryAssignmentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteDeliveryAssignmentRequest) ProtoMessage() {}
+
+func (x *DeleteDeliveryAssignmentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_delivery_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteDeliveryAssignmentRequest.ProtoReflect.Descriptor instead.
+func (*DeleteDeliveryAssignmentRequest) Descriptor() ([]byte, []int) {
+	return file_proto_delivery_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *DeleteDeliveryAssignmentRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
 var File_proto_delivery_proto protoreflect.FileDescriptor
 
 const file_proto_delivery_proto_rawDesc = "" +
 	"\n" +
-	"\x14proto/delivery.proto\x12\bdelivery\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc0\x01\n" +
+	"\x14proto/delivery.proto\x12\bdelivery\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\"\xc0\x01\n" +
 	"\aAddress\x12\x16\n" +
 	"\x06street\x18\x01 \x01(\tR\x06street\x12\x12\n" +
 	"\x04city\x18\x02 \x01(\tR\x04city\x12\x14\n" +
@@ -926,7 +972,9 @@ const file_proto_delivery_proto_rawDesc = "" +
 	"\x11failed_deliveries\x18\x03 \x01(\x05R\x10failedDeliveries\x121\n" +
 	"\x14cancelled_deliveries\x18\x04 \x01(\x05R\x13cancelledDeliveries\x12A\n" +
 	"\x1daverage_delivery_time_minutes\x18\x05 \x01(\x01R\x1aaverageDeliveryTimeMinutes\x121\n" +
-	"\x15on_time_delivery_rate\x18\x06 \x01(\x01R\x12onTimeDeliveryRate*\x85\x01\n" +
+	"\x15on_time_delivery_rate\x18\x06 \x01(\x01R\x12onTimeDeliveryRate\"1\n" +
+	"\x1fDeleteDeliveryAssignmentRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id*\x85\x01\n" +
 	"\x0eDeliveryStatus\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\v\n" +
 	"\aPENDING\x10\x01\x12\f\n" +
@@ -937,14 +985,15 @@ const file_proto_delivery_proto_rawDesc = "" +
 	"\tDELIVERED\x10\x05\x12\n" +
 	"\n" +
 	"\x06FAILED\x10\x06\x12\r\n" +
-	"\tCANCELLED\x10\a2\xc5\x04\n" +
-	"\x0fDeliveryService\x12c\n" +
-	"\x18CreateDeliveryAssignment\x12).delivery.CreateDeliveryAssignmentRequest\x1a\x1c.delivery.DeliveryAssignment\x12]\n" +
-	"\x15GetDeliveryAssignment\x12&.delivery.GetDeliveryAssignmentRequest\x1a\x1c.delivery.DeliveryAssignment\x12[\n" +
-	"\x14UpdateDeliveryStatus\x12%.delivery.UpdateDeliveryStatusRequest\x1a\x1c.delivery.DeliveryAssignment\x12n\n" +
-	"\x17ListDeliveryAssignments\x12(.delivery.ListDeliveryAssignmentsRequest\x1a).delivery.ListDeliveryAssignmentsResponse\x12K\n" +
-	"\fAssignDriver\x12\x1d.delivery.AssignDriverRequest\x1a\x1c.delivery.DeliveryAssignment\x12T\n" +
-	"\x12GetDeliveryMetrics\x12#.delivery.GetDeliveryMetricsRequest\x1a\x19.delivery.DeliveryMetricsB1Z/github.com/company/order-delivery-service/protob\x06proto3"
+	"\tCANCELLED\x10\a2\x88\a\n" +
+	"\x0fDeliveryService\x12~\n" +
+	"\x18CreateDeliveryAssignment\x12).delivery.CreateDeliveryAssignmentRequest\x1a\x1c.delivery.DeliveryAssignment\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/v1/deliveries\x12z\n" +
+	"\x15GetDeliveryAssignment\x12&.delivery.GetDeliveryAssignmentRequest\x1a\x1c.delivery.DeliveryAssignment\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/v1/deliveries/{id}\x12\x82\x01\n" +
+	"\x14UpdateDeliveryStatus\x12%.delivery.UpdateDeliveryStatusRequest\x1a\x1c.delivery.DeliveryAssignment\"%\x82\xd3\xe4\x93\x02\x1f:\x01*2\x1a/v1/deliveries/{id}/status\x12\x86\x01\n" +
+	"\x17ListDeliveryAssignments\x12(.delivery.ListDeliveryAssignmentsRequest\x1a).delivery.ListDeliveryAssignmentsResponse\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/v1/deliveries\x12y\n" +
+	"\fAssignDriver\x12\x1d.delivery.AssignDriverRequest\x1a\x1c.delivery.DeliveryAssignment\",\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/deliveries/{id}/assign-driver\x12t\n" +
+	"\x12GetDeliveryMetrics\x12#.delivery.GetDeliveryMetricsRequest\x1a\x19.delivery.DeliveryMetrics\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/deliveries/metrics\x12z\n" +
+	"\x18DeleteDeliveryAssignment\x12).delivery.DeleteDeliveryAssignmentRequest\x1a\x16.google.protobuf.Empty\"\x1b\x82\xd3\xe4\x93\x02\x15*\x13/v1/deliveries/{id}B1Z/github.com/company/order-delivery-service/protob\x06proto3"
 
 var (
 	file_proto_delivery_proto_rawDescOnce sync.Once
@@ -959,7 +1008,7 @@ func file_proto_delivery_proto_rawDescGZIP() []byte {
 }
 
 var file_proto_delivery_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_proto_delivery_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_proto_delivery_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_proto_delivery_proto_goTypes = []any{
 	(DeliveryStatus)(0),                     // 0: delivery.DeliveryStatus
 	(*Address)(nil),                         // 1: delivery.Address
@@ -972,41 +1021,45 @@ var file_proto_delivery_proto_goTypes = []any{
 	(*AssignDriverRequest)(nil),             // 8: delivery.AssignDriverRequest
 	(*GetDeliveryMetricsRequest)(nil),       // 9: delivery.GetDeliveryMetricsRequest
 	(*DeliveryMetrics)(nil),                 // 10: delivery.DeliveryMetrics
-	(*timestamppb.Timestamp)(nil),           // 11: google.protobuf.Timestamp
+	(*DeleteDeliveryAssignmentRequest)(nil), // 11: delivery.DeleteDeliveryAssignmentRequest
+	(*timestamppb.Timestamp)(nil),           // 12: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),                   // 13: google.protobuf.Empty
 }
 var file_proto_delivery_proto_depIdxs = []int32{
 	0,  // 0: delivery.DeliveryAssignment.status:type_name -> delivery.DeliveryStatus
 	1,  // 1: delivery.DeliveryAssignment.pickup_address:type_name -> delivery.Address
 	1,  // 2: delivery.DeliveryAssignment.delivery_address:type_name -> delivery.Address
-	11, // 3: delivery.DeliveryAssignment.scheduled_pickup_time:type_name -> google.protobuf.Timestamp
-	11, // 4: delivery.DeliveryAssignment.estimated_delivery_time:type_name -> google.protobuf.Timestamp
-	11, // 5: delivery.DeliveryAssignment.actual_pickup_time:type_name -> google.protobuf.Timestamp
-	11, // 6: delivery.DeliveryAssignment.actual_delivery_time:type_name -> google.protobuf.Timestamp
-	11, // 7: delivery.DeliveryAssignment.created_at:type_name -> google.protobuf.Timestamp
-	11, // 8: delivery.DeliveryAssignment.updated_at:type_name -> google.protobuf.Timestamp
+	12, // 3: delivery.DeliveryAssignment.scheduled_pickup_time:type_name -> google.protobuf.Timestamp
+	12, // 4: delivery.DeliveryAssignment.estimated_delivery_time:type_name -> google.protobuf.Timestamp
+	12, // 5: delivery.DeliveryAssignment.actual_pickup_time:type_name -> google.protobuf.Timestamp
+	12, // 6: delivery.DeliveryAssignment.actual_delivery_time:type_name -> google.protobuf.Timestamp
+	12, // 7: delivery.DeliveryAssignment.created_at:type_name -> google.protobuf.Timestamp
+	12, // 8: delivery.DeliveryAssignment.updated_at:type_name -> google.protobuf.Timestamp
 	1,  // 9: delivery.CreateDeliveryAssignmentRequest.pickup_address:type_name -> delivery.Address
 	1,  // 10: delivery.CreateDeliveryAssignmentRequest.delivery_address:type_name -> delivery.Address
-	11, // 11: delivery.CreateDeliveryAssignmentRequest.scheduled_pickup_time:type_name -> google.protobuf.Timestamp
-	11, // 12: delivery.CreateDeliveryAssignmentRequest.estimated_delivery_time:type_name -> google.protobuf.Timestamp
+	12, // 11: delivery.CreateDeliveryAssignmentRequest.scheduled_pickup_time:type_name -> google.protobuf.Timestamp
+	12, // 12: delivery.CreateDeliveryAssignmentRequest.estimated_delivery_time:type_name -> google.protobuf.Timestamp
 	0,  // 13: delivery.UpdateDeliveryStatusRequest.status:type_name -> delivery.DeliveryStatus
 	0,  // 14: delivery.ListDeliveryAssignmentsRequest.status:type_name -> delivery.DeliveryStatus
 	2,  // 15: delivery.ListDeliveryAssignmentsResponse.assignments:type_name -> delivery.DeliveryAssignment
-	11, // 16: delivery.GetDeliveryMetricsRequest.start_time:type_name -> google.protobuf.Timestamp
-	11, // 17: delivery.GetDeliveryMetricsRequest.end_time:type_name -> google.protobuf.Timestamp
+	12, // 16: delivery.GetDeliveryMetricsRequest.start_time:type_name -> google.protobuf.Timestamp
+	12, // 17: delivery.GetDeliveryMetricsRequest.end_time:type_name -> google.protobuf.Timestamp
 	3,  // 18: delivery.DeliveryService.CreateDeliveryAssignment:input_type -> delivery.CreateDeliveryAssignmentRequest
 	4,  // 19: delivery.DeliveryService.GetDeliveryAssignment:input_type -> delivery.GetDeliveryAssignmentRequest
 	5,  // 20: delivery.DeliveryService.UpdateDeliveryStatus:input_type -> delivery.UpdateDeliveryStatusRequest
 	6,  // 21: delivery.DeliveryService.ListDeliveryAssignments:input_type -> delivery.ListDeliveryAssignmentsRequest
 	8,  // 22: delivery.DeliveryService.AssignDriver:input_type -> delivery.AssignDriverRequest
 	9,  // 23: delivery.DeliveryService.GetDeliveryMetrics:input_type -> delivery.GetDeliveryMetricsRequest
-	2,  // 24: delivery.DeliveryService.CreateDeliveryAssignment:output_type -> delivery.DeliveryAssignment
-	2,  // 25: delivery.DeliveryService.GetDeliveryAssignment:output_type -> delivery.DeliveryAssignment
-	2,  // 26: delivery.DeliveryService.UpdateDeliveryStatus:output_type -> delivery.DeliveryAssignment
-	7,  // 27: delivery.DeliveryService.ListDeliveryAssignments:output_type -> delivery.ListDeliveryAssignmentsResponse
-	2,  // 28: delivery.DeliveryService.AssignDriver:output_type -> delivery.DeliveryAssignment
-	10, // 29: delivery.DeliveryService.GetDeliveryMetrics:output_type -> delivery.DeliveryMetrics
-	24, // [24:30] is the sub-list for method output_type
-	18, // [18:24] is the sub-list for method input_type
+	11, // 24: delivery.DeliveryService.DeleteDeliveryAssignment:input_type -> delivery.DeleteDeliveryAssignmentRequest
+	2,  // 25: delivery.DeliveryService.CreateDeliveryAssignment:output_type -> delivery.DeliveryAssignment
+	2,  // 26: delivery.DeliveryService.GetDeliveryAssignment:output_type -> delivery.DeliveryAssignment
+	2,  // 27: delivery.DeliveryService.UpdateDeliveryStatus:output_type -> delivery.DeliveryAssignment
+	7,  // 28: delivery.DeliveryService.ListDeliveryAssignments:output_type -> delivery.ListDeliveryAssignmentsResponse
+	2,  // 29: delivery.DeliveryService.AssignDriver:output_type -> delivery.DeliveryAssignment
+	10, // 30: delivery.DeliveryService.GetDeliveryMetrics:output_type -> delivery.DeliveryMetrics
+	13, // 31: delivery.DeliveryService.DeleteDeliveryAssignment:output_type -> google.protobuf.Empty
+	25, // [25:32] is the sub-list for method output_type
+	18, // [18:25] is the sub-list for method input_type
 	18, // [18:18] is the sub-list for extension type_name
 	18, // [18:18] is the sub-list for extension extendee
 	0,  // [0:18] is the sub-list for field type_name
@@ -1023,7 +1076,7 @@ func file_proto_delivery_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_delivery_proto_rawDesc), len(file_proto_delivery_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   10,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

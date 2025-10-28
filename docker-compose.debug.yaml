@@ -43,6 +43,7 @@ services:
       - DB_LOG_SQL=true                 # Show SQL queries in logs
       - LOG_LEVEL=debug
       - LOG_DEV=true
+      - LOG_STACKTRACE=false            # Disable stack traces (set to true if needed for debugging)
       - AIR_CONFIG=.air.debug.toml      # Use debug config with Delve
     volumes:
       - .:/app                    # Mount source code for hot-reload

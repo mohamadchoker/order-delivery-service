@@ -5,26 +5,61 @@ package delivery;
 option go_package = "github.com/company/order-delivery-service/proto";
 
 import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 
 // DeliveryService manages order delivery assignments
 service DeliveryService {
   // CreateDeliveryAssignment creates a new delivery assignment
-  rpc CreateDeliveryAssignment(CreateDeliveryAssignmentRequest) returns (DeliveryAssignment);
-  
+  rpc CreateDeliveryAssignment(CreateDeliveryAssignmentRequest) returns (DeliveryAssignment) {
+    option (google.api.http) = {
+      post: "/v1/deliveries"
+      body: "*"
+    };
+  }
+
   // GetDeliveryAssignment retrieves a delivery assignment by ID
-  rpc GetDeliveryAssignment(GetDeliveryAssignmentRequest) returns (DeliveryAssignment);
-  
+  rpc GetDeliveryAssignment(GetDeliveryAssignmentRequest) returns (DeliveryAssignment) {
+    option (google.api.http) = {
+      get: "/v1/deliveries/{id}"
+    };
+  }
+
   // UpdateDeliveryStatus updates the status of a delivery
-  rpc UpdateDeliveryStatus(UpdateDeliveryStatusRequest) returns (DeliveryAssignment);
-  
+  rpc UpdateDeliveryStatus(UpdateDeliveryStatusRequest) returns (DeliveryAssignment) {
+    option (google.api.http) = {
+      patch: "/v1/deliveries/{id}/status"
+      body: "*"
+    };
+  }
+
   // ListDeliveryAssignments lists delivery assignments with pagination
-  rpc ListDeliveryAssignments(ListDeliveryAssignmentsRequest) returns (ListDeliveryAssignmentsResponse);
-  
+  rpc ListDeliveryAssignments(ListDeliveryAssignmentsRequest) returns (ListDeliveryAssignmentsResponse) {
+    option (google.api.http) = {
+      get: "/v1/deliveries"
+    };
+  }
+
   // AssignDriver assigns a driver to a delivery
-  rpc AssignDriver(AssignDriverRequest) returns (DeliveryAssignment);
-  
+  rpc AssignDriver(AssignDriverRequest) returns (DeliveryAssignment) {
+    option (google.api.http) = {
+      post: "/v1/deliveries/{id}/assign-driver"
+      body: "*"
+    };
+  }
+
   // GetDeliveryMetrics retrieves delivery metrics
-  rpc GetDeliveryMetrics(GetDeliveryMetricsRequest) returns (DeliveryMetrics);
+  rpc GetDeliveryMetrics(GetDeliveryMetricsRequest) returns (DeliveryMetrics) {
+    option (google.api.http) = {
+      get: "/v1/deliveries/metrics"
+    };
+  }
+
+  rpc DeleteDeliveryAssignment(DeleteDeliveryAssignmentRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/deliveries/{id}"
+    };
+  }
 }
 
 // DeliveryStatus represents the current status of a delivery
@@ -141,4 +176,9 @@ message DeliveryMetrics {
   int32 cancelled_deliveries = 4;
   double average_delivery_time_minutes = 5;
   double on_time_delivery_rate = 6;
+}
+
+
+message DeleteDeliveryAssignmentRequest {
+  string id = 1;
 }

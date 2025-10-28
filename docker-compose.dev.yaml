@@ -31,7 +31,7 @@ services:
     ports:
       - "50051:50051"  # gRPC
       - "9090:9090"    # Metrics
-      - "2345:2345"  # Debugger port
+      - "2345:2345"    # Debugger port
     environment:
       - DB_HOST=postgres
       - DB_PORT=5432
@@ -42,6 +42,7 @@ services:
       - DB_LOG_SQL=true          # Show SQL queries in logs
       - LOG_LEVEL=debug
       - LOG_DEV=true
+      - LOG_STACKTRACE=false     # Disable stack traces (set to true if needed for debugging)
     volumes:
       - .:/app                    # Mount source code for hot-reload
       - go_modules:/go/pkg/mod    # Cache Go modules

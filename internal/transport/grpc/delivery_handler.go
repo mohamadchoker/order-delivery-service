@@ -3,6 +3,7 @@ package grpc
 import (
 	"context"
 
+	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
@@ -29,10 +30,6 @@ func NewHandler(useCase service.DeliveryUseCase, logger *zap.Logger) *Handler {
 
 // CreateDeliveryAssignment creates a new delivery assignment
 func (h *Handler) CreateDeliveryAssignment(ctx context.Context, req *pb.CreateDeliveryAssignmentRequest) (*pb.DeliveryAssignment, error) {
-	h.logger.Info("Received CreateDeliveryAssignment request",
-		zap.String("order_id", req.OrderId),
-	)
-
 	// Validate request
 	if req.OrderId == "" {
 		return nil, status.Error(codes.InvalidArgument, "order_id is required")
@@ -62,10 +59,6 @@ func (h *Handler) CreateDeliveryAssignment(ctx context.Context, req *pb.CreateDe
 
 // GetDeliveryAssignment retrieves a delivery assignment by ID
 func (h *Handler) GetDeliveryAssignment(ctx context.Context, req *pb.GetDeliveryAssignmentRequest) (*pb.DeliveryAssignment, error) {
-	h.logger.Debug("Received GetDeliveryAssignment request",
-		zap.String("id", req.Id),
-	)
-
 	// Parse UUID
 	id, err := uuid.Parse(req.Id)
 	if err != nil {
@@ -83,11 +76,6 @@ func (h *Handler) GetDeliveryAssignment(ctx context.Context, req *pb.GetDelivery
 
 // UpdateDeliveryStatus updates the status of a delivery
 func (h *Handler) UpdateDeliveryStatus(ctx context.Context, req *pb.UpdateDeliveryStatusRequest) (*pb.DeliveryAssignment, error) {
-	h.logger.Info("Received UpdateDeliveryStatus request",
-		zap.String("id", req.Id),
-		zap.String("status", req.Status.String()),
-	)
-
 	// Parse UUID
 	id, err := uuid.Parse(req.Id)
 	if err != nil {
@@ -108,11 +96,6 @@ func (h *Handler) UpdateDeliveryStatus(ctx context.Context, req *pb.UpdateDelive
 
 // ListDeliveryAssignments lists delivery assignments with pagination
 func (h *Handler) ListDeliveryAssignments(ctx context.Context, req *pb.ListDeliveryAssignmentsRequest) (*pb.ListDeliveryAssignmentsResponse, error) {
-	h.logger.Debug("Received ListDeliveryAssignments request",
-		zap.Int32("page", req.Page),
-		zap.Int32("page_size", req.PageSize),
-	)
-
 	// Prepare input
 	input := service.ListDeliveryInput{
 		Page:     int(req.Page),
@@ -150,11 +133,6 @@ func (h *Handler) ListDeliveryAssignments(ctx context.Context, req *pb.ListDeliv
 
 // AssignDriver assigns a driver to a delivery
 func (h *Handler) AssignDriver(ctx context.Context, req *pb.AssignDriverRequest) (*pb.DeliveryAssignment, error) {
-	h.logger.Info("Received AssignDriver request",
-		zap.String("id", req.Id),
-		zap.String("driver_id", req.DriverId),
-	)
-
 	// Parse UUID
 	id, err := uuid.Parse(req.Id)
 	if err != nil {
@@ -179,12 +157,6 @@ func (h *Handler) GetDeliveryMetrics(ctx context.Context, req *pb.GetDeliveryMet
 	startTime := req.StartTime.AsTime()
 	endTime := req.EndTime.AsTime()
 
-	h.logger.Debug("Received GetDeliveryMetrics request",
-		zap.Time("start_time", startTime),
-		zap.Time("end_time", endTime),
-		zap.String("driver_id", req.DriverId),
-	)
-
 	var driverID *string
 	if req.DriverId != "" {
 		driverID = &req.DriverId
@@ -208,4 +180,17 @@ func (h *Handler) GetDeliveryMetrics(ctx context.Context, req *pb.GetDeliveryMet
 		AverageDeliveryTimeMinutes: metrics.AverageDeliveryTimeMinutes,
 		OnTimeDeliveryRate:         metrics.OnTimeDeliveryRate,
 	}, nil
+}
+
+func (h *Handler) DeleteDeliveryAssignment(ctx context.Context, req *pb.DeleteDeliveryAssignmentRequest) (*empty.Empty, error) {
+	id, err := uuid.Parse(req.Id)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, "invalid delivery ID")
+	}
+
+	if err := h.useCase.DeleteDeliveryAssignment(ctx, id); err != nil {
+		return nil, handleError(err)
+	}
+
+	return &empty.Empty{}, nil
 }

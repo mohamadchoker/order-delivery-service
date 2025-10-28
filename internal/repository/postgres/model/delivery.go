@@ -24,7 +24,10 @@ func (a *Address) Scan(value interface{}) error {
 }
 
 // Value implements the driver.Valuer interface for Address
-func (a Address) Value() (driver.Value, error) {
+func (a *Address) Value() (driver.Value, error) {
+	if a == nil {
+		return nil, nil
+	}
 	return json.Marshal(a)
 }
 

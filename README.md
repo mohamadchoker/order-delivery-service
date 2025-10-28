@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/company/order-delivery-service/branch/main/graph/badge.svg)](https://codecov.io/gh/company/order-delivery-service)
 [![License](https://img.shields.io/badge/License-Proprietary-blue.svg)](LICENSE)
 
-An enterprise-grade microservice for managing order delivery assignments built with Go, gRPC, and PostgreSQL, following Clean Architecture and Domain-Driven Design principles.
+An enterprise-grade microservice for managing order delivery assignments built with Go, gRPC, REST, and PostgreSQL, following Clean Architecture and Domain-Driven Design principles. Provides both gRPC and HTTP/REST APIs via grpc-gateway.
 
 ---
 
@@ -41,6 +41,8 @@ An enterprise-grade microservice for managing order delivery assignments built w
 ### Enterprise Features
 - ✅ **Clean Architecture** - Clear separation of concerns (Domain → Service → Repository → Transport)
 - ✅ **Domain-Driven Design** - Business logic encapsulated in domain entities
+- ✅ **Dual Protocol Support** - gRPC and REST/HTTP APIs from single implementation (grpc-gateway)
+- ✅ **OpenAPI/Swagger** - Auto-generated API documentation
 - ✅ **Auto-Generated Mocks** - Type-safe mocks using uber-go/mock
 - ✅ **Comprehensive Validation** - Input validation at all layers
 - ✅ **Request Tracing** - X-Request-ID tracking for end-to-end correlation
@@ -67,9 +69,12 @@ An enterprise-grade microservice for managing order delivery assignments built w
 ### Clean Architecture Layers
 
 ```
+                        gRPC Client          REST/HTTP Client
+                             │                      │
+                             ▼                      ▼
 ┌─────────────────────────────────────────────────────────┐
 │                   Transport Layer                        │
-│              (gRPC Handlers / HTTP)                      │
+│     gRPC Handlers              HTTP Gateway (Proxy)      │
 │          Proto ↔ Domain Conversion                       │
 └────────────────────┬────────────────────────────────────┘
                      │
@@ -123,8 +128,10 @@ Creating a delivery assignment:
 | Component | Technology | Version | Purpose |
 |-----------|-----------|---------|---------|
 | **Language** | Go | 1.24+ | Core application language |
-| **API** | gRPC | - | High-performance RPC framework |
+| **API** | gRPC + REST | - | Dual protocol support |
+| **Gateway** | grpc-gateway | 2.x | gRPC to REST/HTTP proxy |
 | **Protocol** | Protocol Buffers | 3 | API definition and serialization |
+| **OpenAPI** | Swagger | 2.0 | Auto-generated API docs |
 | **Database** | PostgreSQL | 14+ | Primary data store |
 | **ORM** | GORM | 1.25+ | Database abstraction |
 | **Logging** | Uber Zap | 1.27+ | Structured logging |
@@ -156,7 +163,10 @@ Creating a delivery assignment:
 - Docker & Docker Compose (recommended for local development)
 - act (for local GitHub Actions testing)
 - grpcurl (for API testing)
+- curl (for testing REST API)
 ```
+
+> **IDE Setup**: If using GoLand/IntelliJ and seeing proto import errors, see [IDE Setup Guide](docs/IDE_SETUP.md) to configure proto paths.
 
 ### Installation
 
@@ -169,9 +179,12 @@ make install-tools
 # This installs:
 # - protoc-gen-go (Protocol Buffer compiler for Go)
 # - protoc-gen-go-grpc (gRPC plugin for protoc)
+# - protoc-gen-grpc-gateway (gRPC to REST gateway generator)
+# - protoc-gen-openapiv2 (OpenAPI/Swagger generator)
 # - mockgen (Mock generator)
 # - golang-migrate (Database migrations)
 # - golangci-lint (Linter)
+# - air (Hot reload for development)
 
 # Ensure ~/go/bin is in your PATH
 export PATH=$PATH:~/go/bin
@@ -1271,6 +1284,7 @@ test: add integration tests for metrics
 | [CLAUDE.md](CLAUDE.md) | Project guidance for Claude Code |
 | [docs/GOLAND_QUICKSTART.md](docs/GOLAND_QUICKSTART.md) | **🎯 GoLand/IntelliJ quick setup (5 min)** |
 | [docs/EDITOR_SETUP.md](docs/EDITOR_SETUP.md) | **Editor setup (VS Code, GoLand, Vim)** |
+| [docs/LOGGING.md](docs/LOGGING.md) | **Logging configuration & troubleshooting** |
 | [docs/CI_CD.md](docs/CI_CD.md) | **CI/CD pipeline & GitHub Actions** |
 | [docs/MIGRATIONS.md](docs/MIGRATIONS.md) | **Database migrations guide** |
 | [docs/ADDING_NEW_SERVICE.md](docs/ADDING_NEW_SERVICE.md) | Step-by-step guide to adding new gRPC services |
