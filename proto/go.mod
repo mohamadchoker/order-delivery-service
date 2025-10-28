@@ -2,6 +2,8 @@ module github.com/mohamadchoker/order-delivery-service/proto
 
 go 1.24.9
 
+// protos mpdule
+
 require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3
 	google.golang.org/genproto/googleapis/api v0.0.0-20251022142026-3a174f9686a8
