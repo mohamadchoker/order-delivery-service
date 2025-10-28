@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"
 
-	" github.com/mohamadchoker/order-delivery-service/internal/constants"
+	"github.com/mohamadchoker/order-delivery-service/internal/constants"
 )
 
 var (

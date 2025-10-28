@@ -44,8 +44,8 @@ import (
     "google.golang.org/grpc"
 
     // Local/company packages
-    " github.com/mohamadchoker/order-delivery-service/internal/domain"
-    " github.com/mohamadchoker/order-delivery-service/pkg/logger"
+    "github.com/mohamadchoker/order-delivery-service/internal/domain"
+    "github.com/mohamadchoker/order-delivery-service/pkg/logger"
 )
 ```
 
@@ -191,7 +191,7 @@ require'lspconfig'.gopls.setup{
         shadow = true,
       },
       staticcheck = true,
-      ["local"] = " github.com/mohamadchoker/order-delivery-service",
+      ["local"] = "github.com/mohamadchoker/order-delivery-service",
     },
   },
 }
@@ -376,7 +376,7 @@ Check the format tool:
   "go.formatTool": "goimports",  // Should be goimports, not gofmt
   "go.formatFlags": [
     "-local",
-    " github.com/mohamadchoker/order-delivery-service"
+    "github.com/mohamadchoker/order-delivery-service"
   ]
 }
 ```

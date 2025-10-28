@@ -219,7 +219,7 @@ Additional fields depend on the context (method, error, user_id, etc.).
 ```go
 import (
     "go.uber.org/zap"
-    " github.com/mohamadchoker/order-delivery-service/pkg/middleware"
+    "github.com/mohamadchoker/order-delivery-service/pkg/middleware"
 )
 
 func (h *Handler) CreateDelivery(ctx context.Context, req *pb.CreateRequest) (*pb.Delivery, error) {

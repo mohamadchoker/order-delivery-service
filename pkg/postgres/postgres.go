@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
-	" github.com/mohamadchoker/order-delivery-service/internal/config"
+	"github.com/mohamadchoker/order-delivery-service/internal/config"
 )
 
 // Connect establishes a connection to PostgreSQL database

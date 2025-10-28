@@ -288,7 +288,7 @@ func TestCreateDeliveryAssignment(t *testing.T) {
 package service_test
 
 import (
-    " github.com/mohamadchoker/order-delivery-service/internal/mocks"
+    "github.com/mohamadchoker/order-delivery-service/internal/mocks"
     "go.uber.org/mock/gomock"
 )
 

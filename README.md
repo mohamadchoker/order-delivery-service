@@ -528,7 +528,7 @@ make mocks
 # internal/service/delivery_usecase.go  → internal/mocks/usecase_mock.go
 
 # Use in tests:
-import " github.com/mohamadchoker/order-delivery-service/internal/mocks"
+import "github.com/mohamadchoker/order-delivery-service/internal/mocks"
 
 ctrl := gomock.NewController(t)
 defer ctrl.Finish()
@@ -590,8 +590,8 @@ package service_test
 
 import (
     "testing"
-    " github.com/mohamadchoker/order-delivery-service/internal/mocks"
-    " github.com/mohamadchoker/order-delivery-service/internal/service"
+    "github.com/mohamadchoker/order-delivery-service/internal/mocks"
+    "github.com/mohamadchoker/order-delivery-service/internal/service"
     "go.uber.org/mock/gomock"
     "github.com/stretchr/testify/require"
 )

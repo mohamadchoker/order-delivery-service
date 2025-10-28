@@ -6,7 +6,7 @@ import (
 
 	"github.com/google/uuid"
 
-	" github.com/mohamadchoker/order-delivery-service/internal/domain"
+	"github.com/mohamadchoker/order-delivery-service/internal/domain"
 )
 
 //go:generate mockgen -destination=../mocks/repository_mock.go -package=mocks  github.com/mohamadchoker/order-delivery-service/internal/service DeliveryRepository

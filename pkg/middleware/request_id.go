@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 
-	" github.com/mohamadchoker/order-delivery-service/internal/constants"
+	"github.com/mohamadchoker/order-delivery-service/internal/constants"
 )
 
 type requestIDKey struct{}

@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	" github.com/mohamadchoker/order-delivery-service/internal/constants"
+	"github.com/mohamadchoker/order-delivery-service/internal/constants"
 )
 
 // TimeoutUnaryInterceptor adds a timeout to each request

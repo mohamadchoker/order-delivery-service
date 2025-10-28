@@ -10,9 +10,9 @@ import (
 	"go.uber.org/mock/gomock"
 	"go.uber.org/zap"
 
-	" github.com/mohamadchoker/order-delivery-service/internal/domain"
-	" github.com/mohamadchoker/order-delivery-service/internal/mocks"
-	" github.com/mohamadchoker/order-delivery-service/internal/service"
+	"github.com/mohamadchoker/order-delivery-service/internal/domain"
+	"github.com/mohamadchoker/order-delivery-service/internal/mocks"
+	"github.com/mohamadchoker/order-delivery-service/internal/service"
 )
 
 // Example test using uber-go/mock generated mocks

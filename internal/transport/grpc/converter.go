@@ -7,8 +7,8 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	" github.com/mohamadchoker/order-delivery-service/internal/domain"
-	pb " github.com/mohamadchoker/order-delivery-service/proto"
+	"github.com/mohamadchoker/order-delivery-service/internal/domain"
+	pb "github.com/mohamadchoker/order-delivery-service/proto"
 )
 
 // Proto to Domain conversions

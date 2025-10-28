@@ -182,7 +182,7 @@ go install go.uber.org/mock/mockgen@latest
 go generate ./...
 
 # 4. Use in tests
-import " github.com/mohamadchoker/order-delivery-service/internal/mocks"
+import "github.com/mohamadchoker/order-delivery-service/internal/mocks"
 
 mockRepo := mocks.NewMockDeliveryRepository(ctrl)
 mockRepo.EXPECT().Create(gomock.Any(), gomock.Any()).Return(nil)
