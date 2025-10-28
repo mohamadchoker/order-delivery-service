@@ -60,7 +60,7 @@ lint-fix: ## Fix linting issues and format imports
 
 format: ## Format code and organize imports
 	@echo "Formatting code and organizing imports..."
-	@$(HOME)/go/bin/goimports -local github.com/company/order-delivery-service -w $$(find . -name "*.go" -not -path "./vendor/*" -not -path "./proto/*.pb.go")
+	@$(HOME)/go/bin/goimports -local  github.com/mohamadchoker/order-delivery-service -w $$(find . -name "*.go" -not -path "./vendor/*" -not -path "./proto/*.pb.go")
 
 migrate-up: ## Run database migrations up (local - requires PostgreSQL running locally)
 	@echo "Running migrations locally..."

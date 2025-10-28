@@ -44,7 +44,7 @@ linters-settings:
 
   goimports:
     # Put imports beginning with prefix after 3rd-party packages
-    local-prefixes: github.com/company/order-delivery-service
+    local-prefixes:  github.com/mohamadchoker/order-delivery-service
 
   gosec:
     excludes:

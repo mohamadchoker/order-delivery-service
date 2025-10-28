@@ -1,7 +1,7 @@
 # Order Delivery Service
 
-[![CI](https://github.com/company/order-delivery-service/workflows/CI/badge.svg)](https://github.com/company/order-delivery-service/actions)
-[![Go Report Card](https://goreportcard.com/badge/github.com/company/order-delivery-service)](https://goreportcard.com/report/github.com/company/order-delivery-service)
+[![CI](https:// github.com/mohamadchoker/order-delivery-service/workflows/CI/badge.svg)](https:// github.com/mohamadchoker/order-delivery-service/actions)
+[![Go Report Card](https://goreportcard.com/badge/ github.com/mohamadchoker/order-delivery-service)](https://goreportcard.com/report/ github.com/mohamadchoker/order-delivery-service)
 [![codecov](https://codecov.io/gh/company/order-delivery-service/branch/main/graph/badge.svg)](https://codecov.io/gh/company/order-delivery-service)
 [![License](https://img.shields.io/badge/License-Proprietary-blue.svg)](LICENSE)
 
@@ -196,7 +196,7 @@ echo 'export PATH=$PATH:~/go/bin' >> ~/.zshrc
 
 ```bash
 # Clone repository
-git clone https://github.com/company/order-delivery-service.git
+git clone https:// github.com/mohamadchoker/order-delivery-service.git
 cd order-delivery-service
 
 # Install dependencies
@@ -528,7 +528,7 @@ make mocks
 # internal/service/delivery_usecase.go  → internal/mocks/usecase_mock.go
 
 # Use in tests:
-import "github.com/company/order-delivery-service/internal/mocks"
+import " github.com/mohamadchoker/order-delivery-service/internal/mocks"
 
 ctrl := gomock.NewController(t)
 defer ctrl.Finish()
@@ -590,8 +590,8 @@ package service_test
 
 import (
     "testing"
-    "github.com/company/order-delivery-service/internal/mocks"
-    "github.com/company/order-delivery-service/internal/service"
+    " github.com/mohamadchoker/order-delivery-service/internal/mocks"
+    " github.com/mohamadchoker/order-delivery-service/internal/service"
     "go.uber.org/mock/gomock"
     "github.com/stretchr/testify/require"
 )

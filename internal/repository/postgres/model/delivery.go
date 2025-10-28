@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	"github.com/company/order-delivery-service/internal/domain"
+	" github.com/mohamadchoker/order-delivery-service/internal/domain"
 )
 
 // Address is a custom type for storing address as JSONB in PostgreSQL

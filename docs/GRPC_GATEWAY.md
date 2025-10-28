@@ -225,7 +225,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     description: "Enterprise delivery management system";
     contact: {
       name: "API Support";
-      url: "https://github.com/company/order-delivery-service";
+      url: "https:// github.com/mohamadchoker/order-delivery-service";
       email: "api-support@company.com";
     };
   };

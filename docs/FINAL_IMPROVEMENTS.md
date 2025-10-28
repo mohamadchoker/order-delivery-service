@@ -100,10 +100,10 @@ type repository struct { ... }          ✅
 **Files:**
 ```go
 // internal/service/repository.go
-//go:generate mockgen -destination=../mocks/repository_mock.go -package=mocks github.com/company/order-delivery-service/internal/service DeliveryRepository
+//go:generate mockgen -destination=../mocks/repository_mock.go -package=mocks  github.com/mohamadchoker/order-delivery-service/internal/service DeliveryRepository
 
 // internal/service/delivery_usecase.go
-//go:generate mockgen -destination=../mocks/usecase_mock.go -package=mocks github.com/company/order-delivery-service/internal/service DeliveryUseCase
+//go:generate mockgen -destination=../mocks/usecase_mock.go -package=mocks  github.com/mohamadchoker/order-delivery-service/internal/service DeliveryUseCase
 ```
 
 **Usage:**
@@ -346,8 +346,8 @@ grpcurl -plaintext localhost:50051 grpc.health.v1.Health/Check
 ### All Tests Pass ✅
 ```bash
 $ go test ./...
-ok  	github.com/company/order-delivery-service/internal/domain	1.006s
-ok  	github.com/company/order-delivery-service/internal/service	0.803s
+ok  	 github.com/mohamadchoker/order-delivery-service/internal/domain	1.006s
+ok  	 github.com/mohamadchoker/order-delivery-service/internal/service	0.803s
 ```
 
 ### Docker Works ✅

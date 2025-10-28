@@ -206,8 +206,8 @@ RUN go build -ldflags "-X main.version=${VERSION}..."  # ✅ Version tracking
 
 ```bash
 $ go test ./...
-ok      github.com/company/order-delivery-service/internal/domain   0.517s
-ok      github.com/company/order-delivery-service/internal/service  0.788s
+ok       github.com/mohamadchoker/order-delivery-service/internal/domain   0.517s
+ok       github.com/mohamadchoker/order-delivery-service/internal/service  0.788s
 ```
 
 **Coverage:**

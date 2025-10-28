@@ -44,13 +44,13 @@ import (
     "google.golang.org/grpc"
 
     // Local/company packages
-    "github.com/company/order-delivery-service/internal/domain"
-    "github.com/company/order-delivery-service/pkg/logger"
+    " github.com/mohamadchoker/order-delivery-service/internal/domain"
+    " github.com/mohamadchoker/order-delivery-service/pkg/logger"
 )
 ```
 
 **How it works:**
-- `goimports` with `-local github.com/company/order-delivery-service`
+- `goimports` with `-local  github.com/mohamadchoker/order-delivery-service`
 - Runs automatically on save
 - Can be triggered manually: `Cmd+Shift+I` or right-click → "Format Document"
 
@@ -87,13 +87,13 @@ GoLand has excellent built-in Go support. Follow these steps to enable automatic
 3. **Enable "Group stdlib imports"** (checkbox)
 4. **Enable "Group current project imports"** (checkbox)
 5. In **"Sorting type"**: Select **"goimports"**
-6. In **"Add import with project local prefix"**: Enter `github.com/company/order-delivery-service`
+6. In **"Add import with project local prefix"**: Enter ` github.com/mohamadchoker/order-delivery-service`
 7. Click **Apply**
 
 This will create 3 groups:
 - Group 1: Standard library imports
 - Group 2: Third-party imports
-- Group 3: Local project imports (github.com/company/order-delivery-service/*)
+- Group 3: Local project imports ( github.com/mohamadchoker/order-delivery-service/*)
 
 ### Step 2: Enable Format on Save
 
@@ -144,7 +144,7 @@ If you want to format manually without saving:
 1. **Settings** → **Tools** → **File Watchers** → **+** → **Go fmt**
 2. Change:
    - **Program:** `$GOPATH$/bin/goimports`
-   - **Arguments:** `-local github.com/company/order-delivery-service -w $FilePath$`
+   - **Arguments:** `-local  github.com/mohamadchoker/order-delivery-service -w $FilePath$`
 
 ## Neovim/Vim Setup
 
@@ -159,7 +159,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " Auto-format on save
 let g:go_fmt_command = "goimports"
 let g:go_fmt_options = {
-  \ 'goimports': '-local github.com/company/order-delivery-service',
+  \ 'goimports': '-local  github.com/mohamadchoker/order-delivery-service',
   \ }
 
 " Linting
@@ -191,7 +191,7 @@ require'lspconfig'.gopls.setup{
         shadow = true,
       },
       staticcheck = true,
-      ["local"] = "github.com/company/order-delivery-service",
+      ["local"] = " github.com/mohamadchoker/order-delivery-service",
     },
   },
 }
@@ -217,7 +217,7 @@ go install golang.org/x/tools/cmd/goimports@latest
 
 Format a single file:
 ```bash
-~/go/bin/goimports -local github.com/company/order-delivery-service -w file.go
+~/go/bin/goimports -local  github.com/mohamadchoker/order-delivery-service -w file.go
 ```
 
 Format all files using Make:
@@ -228,7 +228,7 @@ make format
 Or manually:
 ```bash
 find . -name "*.go" -not -path "./vendor/*" -not -path "*/.pb.go" | \
-  xargs ~/go/bin/goimports -local github.com/company/order-delivery-service -w
+  xargs ~/go/bin/goimports -local  github.com/mohamadchoker/order-delivery-service -w
 ```
 
 ### golangci-lint
@@ -267,7 +267,7 @@ repos:
       - id: goimports
         name: goimports
         entry: goimports
-        args: [-local, github.com/company/order-delivery-service, -w]
+        args: [-local,  github.com/mohamadchoker/order-delivery-service, -w]
         language: system
         files: \.go$
 
@@ -295,7 +295,7 @@ Create `.git/hooks/pre-commit`:
 
 # Format code
 echo "Running goimports..."
-goimports -local github.com/company/order-delivery-service -w $(find . -name "*.go" -not -path "./vendor/*" -not -path "*.pb.go")
+goimports -local  github.com/mohamadchoker/order-delivery-service -w $(find . -name "*.go" -not -path "./vendor/*" -not -path "*.pb.go")
 
 # Run linter
 echo "Running golangci-lint..."
@@ -376,7 +376,7 @@ Check the format tool:
   "go.formatTool": "goimports",  // Should be goimports, not gofmt
   "go.formatFlags": [
     "-local",
-    "github.com/company/order-delivery-service"
+    " github.com/mohamadchoker/order-delivery-service"
   ]
 }
 ```
@@ -391,7 +391,7 @@ Check the format tool:
    - Settings → Editor → Code Style → Go → Imports
    - ✅ "Group stdlib imports" should be checked
    - ✅ "Group current project imports" should be checked
-   - "Add import with project local prefix" should be: `github.com/company/order-delivery-service`
+   - "Add import with project local prefix" should be: ` github.com/mohamadchoker/order-delivery-service`
 
 3. **Verify Actions on Save**:
    - Settings → Tools → Actions on Save

@@ -9,8 +9,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/company/order-delivery-service/internal/service"
-	pb "github.com/company/order-delivery-service/proto"
+	" github.com/mohamadchoker/order-delivery-service/internal/service"
+	pb " github.com/mohamadchoker/order-delivery-service/proto"
 )
 
 // Handler implements the gRPC DeliveryService

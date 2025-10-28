@@ -14,7 +14,7 @@ Configure these settings:
 ✅ Group stdlib imports
 ✅ Group current project imports
 Sorting type: goimports
-Add import with project local prefix: github.com/company/order-delivery-service
+Add import with project local prefix:  github.com/mohamadchoker/order-delivery-service
 ```
 
 ### 2. Format on Save
@@ -59,8 +59,8 @@ import (
     "google.golang.org/grpc"
 
     // Group 3: Local project packages
-    "github.com/company/order-delivery-service/internal/domain"
-    "github.com/company/order-delivery-service/pkg/logger"
+    " github.com/mohamadchoker/order-delivery-service/internal/domain"
+    " github.com/mohamadchoker/order-delivery-service/pkg/logger"
 )
 ```
 
@@ -101,7 +101,7 @@ Working directory: $ProjectFileDir$
 ```
 Name: goimports
 Program: /Users/mohamadchoker/go/bin/goimports
-Arguments: -local github.com/company/order-delivery-service -w $FilePath$
+Arguments: -local  github.com/mohamadchoker/order-delivery-service -w $FilePath$
 Working directory: $ProjectFileDir$
 ```
 
@@ -119,7 +119,7 @@ Working directory: $ProjectFileDir$
 2. **Check grouping is enabled**:
    - Settings → Editor → Code Style → Go → Imports
    - Both checkboxes should be ✅
-   - Local prefix should be: `github.com/company/order-delivery-service`
+   - Local prefix should be: ` github.com/mohamadchoker/order-delivery-service`
 
 3. **Test manually**:
    - Open any `.go` file
@@ -180,7 +180,7 @@ Imports:
   ✅ Group stdlib imports
   ✅ Group current project imports
   Sorting type: goimports
-  Local prefix: github.com/company/order-delivery-service
+  Local prefix:  github.com/mohamadchoker/order-delivery-service
 ```
 
 ---

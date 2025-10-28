@@ -127,11 +127,11 @@ Stack traces show the call chain when errors occur. They help identify where err
 ```
 2024-10-24T15:30:45.123Z  ERROR  grpc/grpc_handler.go:125  Failed to create delivery
         error: database connection failed
-github.com/company/order-delivery-service/internal/transport/grpc.(*Handler).CreateDeliveryAssignment
+ github.com/mohamadchoker/order-delivery-service/internal/transport/grpc.(*Handler).CreateDeliveryAssignment
         /app/internal/transport/grpc/grpc_handler.go:125
-github.com/company/order-delivery-service/internal/service.(*deliveryUseCase).CreateDeliveryAssignment
+ github.com/mohamadchoker/order-delivery-service/internal/service.(*deliveryUseCase).CreateDeliveryAssignment
         /app/internal/service/delivery_usecase.go:45
-github.com/company/order-delivery-service/internal/repository/postgres.(*postgresRepository).Create
+ github.com/mohamadchoker/order-delivery-service/internal/repository/postgres.(*postgresRepository).Create
         /app/internal/repository/postgres/repository.go:67
 ```
 
@@ -219,7 +219,7 @@ Additional fields depend on the context (method, error, user_id, etc.).
 ```go
 import (
     "go.uber.org/zap"
-    "github.com/company/order-delivery-service/pkg/middleware"
+    " github.com/mohamadchoker/order-delivery-service/pkg/middleware"
 )
 
 func (h *Handler) CreateDelivery(ctx context.Context, req *pb.CreateRequest) (*pb.Delivery, error) {

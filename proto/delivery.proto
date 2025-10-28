@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package delivery;
 
-option go_package = "github.com/company/order-delivery-service/proto";
+option go_package = " github.com/mohamadchoker/order-delivery-service/proto";
 
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";

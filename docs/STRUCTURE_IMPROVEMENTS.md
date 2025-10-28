@@ -14,7 +14,7 @@ This document outlines the structural improvements made to the order-delivery-se
 **Before:**
 ```go
 // internal/service/delivery_usecase.go
-import "github.com/company/order-delivery-service/internal/repository/postgres"
+import " github.com/mohamadchoker/order-delivery-service/internal/repository/postgres"
 
 type deliveryUseCase struct {
     repo postgres.DeliveryRepository  // ❌ Depends on implementation

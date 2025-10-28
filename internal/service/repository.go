@@ -6,10 +6,10 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/company/order-delivery-service/internal/domain"
+	" github.com/mohamadchoker/order-delivery-service/internal/domain"
 )
 
-//go:generate mockgen -destination=../mocks/repository_mock.go -package=mocks github.com/company/order-delivery-service/internal/service DeliveryRepository
+//go:generate mockgen -destination=../mocks/repository_mock.go -package=mocks  github.com/mohamadchoker/order-delivery-service/internal/service DeliveryRepository
 
 // DeliveryRepository defines the interface for delivery data access.
 // This interface belongs to the service layer (Dependency Inversion Principle).

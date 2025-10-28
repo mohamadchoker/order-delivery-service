@@ -176,13 +176,13 @@ func (m *MockRepository) Create(...) error {
 go install go.uber.org/mock/mockgen@latest
 
 # 2. Add to repository interface file
-//go:generate mockgen -destination=../mocks/repository_mock.go -package=mocks github.com/company/order-delivery-service/internal/service DeliveryRepository
+//go:generate mockgen -destination=../mocks/repository_mock.go -package=mocks  github.com/mohamadchoker/order-delivery-service/internal/service DeliveryRepository
 
 # 3. Generate mocks
 go generate ./...
 
 # 4. Use in tests
-import "github.com/company/order-delivery-service/internal/mocks"
+import " github.com/mohamadchoker/order-delivery-service/internal/mocks"
 
 mockRepo := mocks.NewMockDeliveryRepository(ctrl)
 mockRepo.EXPECT().Create(gomock.Any(), gomock.Any()).Return(nil)

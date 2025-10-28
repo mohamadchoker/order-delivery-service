@@ -7,10 +7,10 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	"github.com/company/order-delivery-service/internal/domain"
+	" github.com/mohamadchoker/order-delivery-service/internal/domain"
 )
 
-//go:generate mockgen -destination=../mocks/usecase_mock.go -package=mocks github.com/company/order-delivery-service/internal/service DeliveryUseCase
+//go:generate mockgen -destination=../mocks/usecase_mock.go -package=mocks  github.com/mohamadchoker/order-delivery-service/internal/service DeliveryUseCase
 
 // DeliveryUseCase defines the business logic interface
 type DeliveryUseCase interface {

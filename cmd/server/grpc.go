@@ -11,9 +11,9 @@ import (
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 
-	"github.com/company/order-delivery-service/pkg/metrics"
-	"github.com/company/order-delivery-service/pkg/middleware"
-	pb "github.com/company/order-delivery-service/proto"
+	" github.com/mohamadchoker/order-delivery-service/pkg/metrics"
+	" github.com/mohamadchoker/order-delivery-service/pkg/middleware"
+	pb " github.com/mohamadchoker/order-delivery-service/proto"
 )
 
 // GRPCServer wraps the gRPC server with its dependencies

@@ -9,9 +9,9 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	"github.com/company/order-delivery-service/internal/domain"
-	"github.com/company/order-delivery-service/internal/repository/postgres/model"
-	"github.com/company/order-delivery-service/internal/service"
+	" github.com/mohamadchoker/order-delivery-service/internal/domain"
+	" github.com/mohamadchoker/order-delivery-service/internal/repository/postgres/model"
+	" github.com/mohamadchoker/order-delivery-service/internal/service"
 )
 
 // repository implements service.DeliveryRepository using PostgreSQL

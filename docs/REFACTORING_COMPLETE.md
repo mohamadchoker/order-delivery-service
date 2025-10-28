@@ -128,15 +128,15 @@ All tests pass successfully:
 
 ```bash
 $ go test ./internal/service/
-ok  	github.com/company/order-delivery-service/internal/service	0.306s
+ok  	 github.com/mohamadchoker/order-delivery-service/internal/service	0.306s
 ```
 
 All tests in the project:
 
 ```bash
 $ go test ./...
-ok  	github.com/company/order-delivery-service/internal/domain	(cached)
-ok  	github.com/company/order-delivery-service/internal/service	0.166s
+ok  	 github.com/mohamadchoker/order-delivery-service/internal/domain	(cached)
+ok  	 github.com/mohamadchoker/order-delivery-service/internal/service	0.166s
 ```
 
 Build verification:
@@ -171,12 +171,12 @@ internal/mocks/
 
 **File**: `internal/service/repository.go`
 ```go
-//go:generate mockgen -destination=../mocks/repository_mock.go -package=mocks github.com/company/order-delivery-service/internal/service DeliveryRepository
+//go:generate mockgen -destination=../mocks/repository_mock.go -package=mocks  github.com/mohamadchoker/order-delivery-service/internal/service DeliveryRepository
 ```
 
 **File**: `internal/service/delivery_usecase.go`
 ```go
-//go:generate mockgen -destination=../mocks/usecase_mock.go -package=mocks github.com/company/order-delivery-service/internal/service DeliveryUseCase
+//go:generate mockgen -destination=../mocks/usecase_mock.go -package=mocks  github.com/mohamadchoker/order-delivery-service/internal/service DeliveryUseCase
 ```
 
 ---
@@ -288,7 +288,7 @@ func TestCreateDeliveryAssignment(t *testing.T) {
 package service_test
 
 import (
-    "github.com/company/order-delivery-service/internal/mocks"
+    " github.com/mohamadchoker/order-delivery-service/internal/mocks"
     "go.uber.org/mock/gomock"
 )
 

@@ -11,12 +11,12 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 
-	"github.com/company/order-delivery-service/internal/config"
-	"github.com/company/order-delivery-service/internal/repository/postgres"
-	"github.com/company/order-delivery-service/internal/service"
-	grpchandler "github.com/company/order-delivery-service/internal/transport/grpc"
-	"github.com/company/order-delivery-service/pkg/logger"
-	dbpkg "github.com/company/order-delivery-service/pkg/postgres"
+	" github.com/mohamadchoker/order-delivery-service/internal/config"
+	" github.com/mohamadchoker/order-delivery-service/internal/repository/postgres"
+	" github.com/mohamadchoker/order-delivery-service/internal/service"
+	grpchandler " github.com/mohamadchoker/order-delivery-service/internal/transport/grpc"
+	" github.com/mohamadchoker/order-delivery-service/pkg/logger"
+	dbpkg " github.com/mohamadchoker/order-delivery-service/pkg/postgres"
 )
 
 // App represents the application with all its dependencies

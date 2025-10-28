@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"github.com/company/order-delivery-service/pkg/middleware"
-	pb "github.com/company/order-delivery-service/proto"
+	" github.com/mohamadchoker/order-delivery-service/pkg/middleware"
+	pb " github.com/mohamadchoker/order-delivery-service/proto"
 )
 
 // HTTPServer wraps the HTTP/REST gateway server

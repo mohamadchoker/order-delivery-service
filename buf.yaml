@@ -1,5 +1,5 @@
 version: v1
-name: github.com/company/order-delivery-service
+name:  github.com/mohamadchoker/order-delivery-service
 deps:
   - buf.build/googleapis/googleapis
 breaking:

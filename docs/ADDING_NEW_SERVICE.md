@@ -19,7 +19,7 @@ syntax = "proto3";
 
 package driver;
 
-option go_package = "github.com/company/order-delivery-service/proto";
+option go_package = " github.com/mohamadchoker/order-delivery-service/proto";
 
 import "google/protobuf/timestamp.proto";
 
@@ -167,7 +167,7 @@ package postgres
 import (
 	"context"
 
-	"github.com/company/order-delivery-service/internal/domain"
+	" github.com/mohamadchoker/order-delivery-service/internal/domain"
 	"github.com/google/uuid"
 )
 
@@ -190,8 +190,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/company/order-delivery-service/internal/domain"
-	"github.com/company/order-delivery-service/internal/repository/postgres/model"
+	" github.com/mohamadchoker/order-delivery-service/internal/domain"
+	" github.com/mohamadchoker/order-delivery-service/internal/repository/postgres/model"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -282,7 +282,7 @@ package model
 import (
 	"time"
 
-	"github.com/company/order-delivery-service/internal/domain"
+	" github.com/mohamadchoker/order-delivery-service/internal/domain"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -349,9 +349,9 @@ package service
 import (
 	"context"
 
-	"github.com/company/order-delivery-service/internal/domain"
-	"github.com/company/order-delivery-service/internal/repository/postgres"
-	"github.com/company/order-delivery-service/pkg/validator"
+	" github.com/mohamadchoker/order-delivery-service/internal/domain"
+	" github.com/mohamadchoker/order-delivery-service/internal/repository/postgres"
+	" github.com/mohamadchoker/order-delivery-service/pkg/validator"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
@@ -483,8 +483,8 @@ package grpc
 import (
 	"context"
 
-	"github.com/company/order-delivery-service/internal/service"
-	pb "github.com/company/order-delivery-service/proto"
+	" github.com/mohamadchoker/order-delivery-service/internal/service"
+	pb " github.com/mohamadchoker/order-delivery-service/proto"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
@@ -604,8 +604,8 @@ func (h *DriverHandler) UpdateDriverStatus(ctx context.Context, req *pb.UpdateDr
 package grpc
 
 import (
-	"github.com/company/order-delivery-service/internal/domain"
-	pb "github.com/company/order-delivery-service/proto"
+	" github.com/mohamadchoker/order-delivery-service/internal/domain"
+	pb " github.com/mohamadchoker/order-delivery-service/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 

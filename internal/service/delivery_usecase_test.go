@@ -11,9 +11,9 @@ import (
 	"go.uber.org/mock/gomock"
 	"go.uber.org/zap"
 
-	"github.com/company/order-delivery-service/internal/domain"
-	"github.com/company/order-delivery-service/internal/mocks"
-	"github.com/company/order-delivery-service/internal/service"
+	" github.com/mohamadchoker/order-delivery-service/internal/domain"
+	" github.com/mohamadchoker/order-delivery-service/internal/mocks"
+	" github.com/mohamadchoker/order-delivery-service/internal/service"
 )
 
 func TestCreateDeliveryAssignment(t *testing.T) {
