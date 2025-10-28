@@ -17,7 +17,7 @@ proto: ## Generate Go code from proto files
 	@protoc --go_out=. --go_opt=paths=source_relative \
 		--go-grpc_out=. --go-grpc_opt=paths=source_relative \
 		--grpc-gateway_out=. --grpc-gateway_opt=paths=source_relative \
-		--openapiv2_out=. --openapiv2_opt=allow_merge=true,merge_file_name=api \
+		--openapiv2_out=$(PROTO_DIR) --openapiv2_opt=allow_merge=true,merge_file_name=delivery.swagger \
 		--proto_path=. --proto_path=third_party \
 		$(PROTO_DIR)/*.proto
 	@echo "Proto files generated successfully"
