@@ -993,7 +993,7 @@ const file_proto_delivery_proto_rawDesc = "" +
 	"\x17ListDeliveryAssignments\x12(.delivery.ListDeliveryAssignmentsRequest\x1a).delivery.ListDeliveryAssignmentsResponse\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/v1/deliveries\x12y\n" +
 	"\fAssignDriver\x12\x1d.delivery.AssignDriverRequest\x1a\x1c.delivery.DeliveryAssignment\",\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/deliveries/{id}/assign-driver\x12t\n" +
 	"\x12GetDeliveryMetrics\x12#.delivery.GetDeliveryMetricsRequest\x1a\x19.delivery.DeliveryMetrics\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/deliveries/metrics\x12z\n" +
-	"\x18DeleteDeliveryAssignment\x12).delivery.DeleteDeliveryAssignmentRequest\x1a\x16.google.protobuf.Empty\"\x1b\x82\xd3\xe4\x93\x02\x15*\x13/v1/deliveries/{id}B1Z/ github.com/mohamadchoker/order-delivery-service/protob\x06proto3"
+	"\x18DeleteDeliveryAssignment\x12).delivery.DeleteDeliveryAssignmentRequest\x1a\x16.google.protobuf.Empty\"\x1b\x82\xd3\xe4\x93\x02\x15*\x13/v1/deliveries/{id}B7Z5github.com/mohamadchoker/order-delivery-service/protob\x06proto3"
 
 var (
 	file_proto_delivery_proto_rawDescOnce sync.Once
