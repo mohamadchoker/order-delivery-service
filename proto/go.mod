@@ -1,4 +1,4 @@
-module github.com/mohamadcoker/order-delivery-service/proto
+module github.com/mohamadchoker/order-delivery-service/proto
 
 go 1.24.9
 
